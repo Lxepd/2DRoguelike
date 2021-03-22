@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,29 +17,29 @@ public class RoomController : MonoBehaviour
     public Direction direction;
 
 
-    [Header("·¿¼äĞÅÏ¢")]
-    //·¿¼äÔ¤ÖÆÌå
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢")]
+    //ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
     public GameObject roomprefab;
-    //xÎ»ÒÆÁ¿
+    //xÎ»ï¿½ï¿½ï¿½ï¿½
     public int xOffset;
-    //yÎ»ÒÆÁ¿
+    //yÎ»ï¿½ï¿½ï¿½ï¿½
     public int yOffset;
-    //·¿¼ä×ÜÊı
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public int roomsNum;
     public Color startColor;
     public Color endColor;
 
     List<GameObject> rooms = new List<GameObject>();
-    //¼ÇÂ¼·¿¼ä×ø±ê
+    //ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     List<Vector2> roomPoints = new List<Vector2>();
-    //ÏÂÒ»¸öĞèÒªÉú³É·¿¼äµÄÎ»ÖÃ
+    //ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½É·ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     Vector2 roomNextPos;
-    //¼ÇÂ¼ÉÏÒ»¸ö·¿¼ä
+    //è®°å½•ä¸Šä¸€ä¸ªæˆ¿é—´
     Vector2 LastRoom = new Vector2(0,0);
-    //ÃÅµÄÂß¼­Åö×²Í¼²ã
-    [Tooltip("ÅĞ¶Ï²úÉúÃÅµÄÍ¼²ã")]
+    //é—¨çš„é€»è¾‘ç¢°æ’å›¾å±‚
+    [Tooltip("ï¿½Ğ¶Ï²ï¿½ï¿½ï¿½ï¿½Åµï¿½Í¼ï¿½ï¿½")]
     public LayerMask roomLayer;
-    //·ÅÖÃÇ½±ÚÇ½±ÚµÄÔ¤ÖÆÌå
+    //æ”¾ç½®å¢™å£å¢™å£çš„é¢„åˆ¶ä½“
     public WallType[] wall;
 
     void Start()
@@ -55,7 +55,7 @@ public class RoomController : MonoBehaviour
 
         foreach (GameObject go in rooms)
             SetRoomDoors(go.GetComponent<Room>(), go.transform.position);
-
+            
         instance = this;
     }
 

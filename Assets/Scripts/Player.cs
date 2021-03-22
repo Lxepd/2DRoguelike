@@ -62,7 +62,6 @@ public class Player : MonoBehaviour
                     Physics2D.OverlapCircleAll(attackPos.position, attackRange, hurtMask);
 
                 for (var i = 0; i < enemyToDamage.Length; i++)
-                    enemyToDamage[i].GetComponent<EnemyBehaviorController>().IsHurt();
 
                 anima.SetTrigger("Attack");
                 timeToAttack = startTimeToAttack;
