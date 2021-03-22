@@ -5,6 +5,4 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public EnemyData[] enemyDatas;
-    int aaaa;
-    int bbb;
 }
