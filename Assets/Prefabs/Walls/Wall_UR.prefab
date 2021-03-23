@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 6072533664332950749}
   - component: {fileID: 1784954496949286981}
   - component: {fileID: 1266083625353745138}
-  - component: {fileID: 6495740220821433729}
-  m_Layer: 0
+  - component: {fileID: 6952948924222781105}
+  - component: {fileID: 6870743371329798571}
+  m_Layer: 6
   m_Name: DownTilemap
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -609,8 +610,8 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!19719996 &6495740220821433729
-TilemapCollider2D:
+--- !u!61 &6952948924222781105
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -622,9 +623,45 @@ TilemapCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0.00001
+  m_Offset: {x: -0.28287554, y: -4.774365}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 18.56575, y: 1.7057657}
+  m_EdgeRadius: 0
+--- !u!61 &6870743371329798571
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365969326648018850}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 8.932838, y: -0.094132185}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.3888168, y: 11.45223}
+  m_EdgeRadius: 0
 --- !u!1 &2204071048062586450
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,7 +673,7 @@ GameObject:
   - component: {fileID: 3577961386479202364}
   - component: {fileID: 4099451621037959191}
   - component: {fileID: 556055295366457410}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1904,8 +1941,9 @@ GameObject:
   - component: {fileID: 8538225585207279957}
   - component: {fileID: 6901462367627201454}
   - component: {fileID: 3258188623912972688}
-  - component: {fileID: 2015609149007573309}
-  m_Layer: 0
+  - component: {fileID: 5552891747104294057}
+  - component: {fileID: 6482269679781102562}
+  m_Layer: 6
   m_Name: UpTilemap
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -2470,8 +2508,8 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!19719996 &2015609149007573309
-TilemapCollider2D:
+--- !u!61 &5552891747104294057
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2483,9 +2521,45 @@ TilemapCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0.00001
+  m_Offset: {x: 0, y: 4.743617}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 18, y: 1.3547707}
+  m_EdgeRadius: 0
+--- !u!61 &6482269679781102562
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3101813351032634001}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -8.926216, y: 0.039258003}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.4020615, y: 11.728483}
+  m_EdgeRadius: 0
 --- !u!1 &4473814269772665679
 GameObject:
   m_ObjectHideFlags: 0
@@ -2496,7 +2570,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1170347513591884043}
   - component: {fileID: 7786088414443474188}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2542,7 +2616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3506006723590226752}
   - component: {fileID: 8302293396576784990}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Wall_UR
   m_TagString: Wall
   m_Icon: {fileID: 0}

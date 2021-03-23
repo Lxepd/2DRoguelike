@@ -14,10 +14,13 @@ public class Room : MonoBehaviour
 
     public static Room instance;
 
-    void Start()
+    private void Awake()
     {
         instance = this;
+    }
 
+    void Start()
+    {
         upDoor.SetActive(isUp);
         downDoor.SetActive(isDown);
         leftDoor.SetActive(isLeft);

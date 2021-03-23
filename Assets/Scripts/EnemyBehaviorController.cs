@@ -29,7 +29,7 @@ public class EnemyBehaviorController : MonoBehaviour
     //当前行为时间
     public float animaTime;
     //速度
-    public float speed;
+    float speed;
     //判断是否允许行走
     public bool isCanMove;
     //动画组件
@@ -47,11 +47,9 @@ public class EnemyBehaviorController : MonoBehaviour
     //当前移动次数记录
     int moveKeep;
 
-    public EnemyData[] enemyDatas;
-
     private void Start()
     {
-        speed *= 0.1f;
+        speed = 0;
         isCanMove = true;
         anima = GetComponent<Animator>();
         nextMoveNum = 0;
@@ -60,21 +58,13 @@ public class EnemyBehaviorController : MonoBehaviour
 
     private void Update()
     {
-        if (animaTime <= 0 && isCanMove)
+        if (animaTime <= 0 && (isCanMove || !isCanMove))
         {
-            SwitchAnim();
-            animaTime = animaNextTime;
-        }
-        else if(animaTime <= -2 && !isCanMove)
-        {
-            //撞墙，*-1反方向移动
-            moreTimeMove *= -1;
             SwitchAnim();
             animaTime = animaNextTime;
         }
         else
             animaTime -= Time.deltaTime;
-
 
         if (Vector2.Distance(transform.position, targetPos) == 0)
             isCanMove = true;
@@ -97,33 +87,24 @@ public class EnemyBehaviorController : MonoBehaviour
 
     void SwitchAnim()
     {
-        if (nextMoveNum == 0 || moveKeep ==nextMoveNum)
+        if (nextMoveNum == 0 || moveKeep == nextMoveNum)
             behaviour = (Behaviour)Random.Range(0, 2);
-        else if(Vector3.Distance(transform.position,targetPos)!=0)
+        else if (Vector3.Distance(transform.position, targetPos) != 0)
             behaviour = Behaviour.move;
 
         switch (behaviour)
         {
             case Behaviour.idle:
                 break;
-            case Behaviour.move:
-                //移动
-                EnemyMove();
+            case Behaviour.move:              
+                MoveTimesDecide();
+                TargetDecide();
                 break;
         }
     }
 
-    public void EnemyMove()
+    public void MoveTimesDecide()
     {
-        //检查移动位置是否有墙壁，否则换个方向移动
-        //Check::TODO
-
-        //决定移动方向
-        if (moveKeep == nextMoveNum)
-            while (direction == lastDirection)
-                direction = (Direction)Random.Range(0, 8);
-
-        lastDirection = direction;
         //连续移动
         if (moveKeep == nextMoveNum)
         {
@@ -134,7 +115,7 @@ public class EnemyBehaviorController : MonoBehaviour
         moveKeep++;
         //重复移动
         if (moveKeep != 1)
-        {
+        {      
             isCanMove = false;
             targetPos = transform.position;
             targetPos += moreTimeMove;
@@ -143,41 +124,62 @@ public class EnemyBehaviorController : MonoBehaviour
 
             return;
         }
-        //首次移动
-        isCanMove = false;  
+    }
 
+    void TargetDecide()
+    {
+        //决定移动方向
+        if (moveKeep == nextMoveNum)
+            while (direction == lastDirection)
+                direction = (Direction)Random.Range(0, 8);
+
+        lastDirection = direction;
+        //首次移动
+        isCanMove = false;
         targetPos = transform.position;
         anima.SetTrigger("move");
 
         switch (direction)
         {
             case Direction.Up:
-                moreTimeMove = new Vector3(0, speed*2, 0);
+                moreTimeMove = new Vector3(0, speed * 2, 0);
                 break;
             case Direction.Down:
-                moreTimeMove = new Vector3(0, -speed*2, 0);
+                moreTimeMove = new Vector3(0, -speed * 2, 0);
                 break;
             case Direction.Left:
-                moreTimeMove = new Vector3(-speed*2, 0, 0);
+                moreTimeMove = new Vector3(-speed * 2, 0, 0);
                 break;
             case Direction.Right:
-                moreTimeMove = new Vector3(speed*2, 0, 0);
+                moreTimeMove = new Vector3(speed * 2, 0, 0);
                 break;
             case Direction.UpAndLeft:
-                moreTimeMove = new Vector3(-speed*2, speed*2, 0);
+                moreTimeMove = new Vector3(-speed * 2, speed * 2, 0);
                 break;
             case Direction.UpAndRight:
-                moreTimeMove = new Vector3(speed*2, speed*2, 0);
+                moreTimeMove = new Vector3(speed * 2, speed * 2, 0);
                 break;
             case Direction.DownAndLeft:
-                moreTimeMove = new Vector3(-speed*2, -speed*2, 0);
+                moreTimeMove = new Vector3(-speed * 2, -speed * 2, 0);
                 break;
             case Direction.DownAndRight:
-                moreTimeMove = new Vector3(speed*2, -speed*2, 0);
+                moreTimeMove = new Vector3(speed * 2, -speed * 2, 0);
                 break;
         }
 
         targetPos += moreTimeMove;
         t = Vector2.Distance(transform.position, targetPos) * Time.deltaTime / speed;
     }
+
+    void SetMoveSpeed(float cspeed)
+    {      
+        speed = cspeed * 0.1f;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Wall"))
+            moreTimeMove *= -1;
+    }
+
 }

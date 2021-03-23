@@ -100,10 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 0
   behaviour: 0
-  animaNextTime: 2
+  animaNextTime: 0.7
   animaTime: 0
-  moveCheckRange: 0
-  speed: 4
   isCanMove: 0
 --- !u!95 &6825860519174281101
 Animator:

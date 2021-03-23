@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class RoomController : MonoBehaviour
 {
-    public RoomController instance;
+    public static RoomController instance;
 
     public enum Direction
     {
@@ -17,30 +17,35 @@ public class RoomController : MonoBehaviour
     public Direction direction;
 
 
-    [Header("������Ϣ")]
-    //����Ԥ����
+    [Header("房间信息")]
+    //房间预制体
     public GameObject roomprefab;
-    //xλ����
+    //x房间偏移量
     public int xOffset;
-    //yλ����
+    //y房间偏移量
     public int yOffset;
-    //��������
+    //房间数量
     public int roomsNum;
     public Color startColor;
     public Color endColor;
 
-    List<GameObject> rooms = new List<GameObject>();
-    //��¼��������
-    List<Vector2> roomPoints = new List<Vector2>();
-    //��һ����Ҫ���ɷ����λ��
+    public Transform roomParent;
+    int roomToWall = 0;
+
+    public List<GameObject> rooms = new List<GameObject>();
+    //房间坐标存放表
+    public List<Vector2> roomPoints = new List<Vector2>();
+    //下一个房间的位置
     Vector2 roomNextPos;
-    //记录上一个房间
+    //保存上一个房间的变量
     Vector2 LastRoom = new Vector2(0,0);
-    //门的逻辑碰撞图层
-    [Tooltip("�жϲ����ŵ�ͼ��")]
+    //房间Layer
+    [Tooltip("房间碰撞判断Layer")]
     public LayerMask roomLayer;
-    //放置墙壁墙壁的预制体
+    //墙壁
     public WallType[] wall;
+
+    public EnemyController enemyController;
 
     void Start()
     {
@@ -49,13 +54,18 @@ public class RoomController : MonoBehaviour
         CreateRoom();
 
         for (var i = 0; i < roomPoints.Count; i++)
+        {
             rooms.Add(Instantiate(roomprefab, roomPoints[i], Quaternion.identity));
+            rooms[i].transform.parent = roomParent;
+        }
 
         FindEndRoom();
 
         foreach (GameObject go in rooms)
-            SetRoomDoors(go.GetComponent<Room>(), go.transform.position);
-            
+            SetRoomDoors(go.GetComponent<Room>(), go.transform.position, roomToWall++);
+
+        enemyController.enabled = true;
+
         instance = this;
     }
 
@@ -123,18 +133,18 @@ public class RoomController : MonoBehaviour
         endRoomVec.GetComponent<SpriteRenderer>().color = endColor;
     }
 
-    void SetRoomDoors(Room rom,Vector2 rompos)
+    void SetRoomDoors(Room rom,Vector2 rompos,int roomindex)
     {
         rom.isUp = Physics2D.OverlapCircle(rompos + new Vector2(0, yOffset), 0.2f, roomLayer);
         rom.isDown = Physics2D.OverlapCircle(rompos + new Vector2(0, -yOffset), 0.2f, roomLayer);
         rom.isLeft = Physics2D.OverlapCircle(rompos + new Vector2(-xOffset,0), 0.2f, roomLayer);
         rom.isRight = Physics2D.OverlapCircle(rompos + new Vector2(xOffset,0), 0.2f, roomLayer);
 
-        CreateRoomWall(rom, rompos);
+        CreateRoomWall(rom, rompos).transform.parent = rooms[roomindex].transform;
     }
 
-    void CreateRoomWall(Room rom,Vector2 rompos)
+    GameObject CreateRoomWall(Room rom,Vector2 rompos)
     {
-        Instantiate(wall[rom.GetWallIndex()].wallFrefab[0], rompos, Quaternion.identity);
+        return Instantiate(wall[rom.GetWallIndex()].wallFrefab[0], rompos, Quaternion.identity);
     }
 }
