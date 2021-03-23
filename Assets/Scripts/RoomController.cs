@@ -44,7 +44,7 @@ public class RoomController : MonoBehaviour
     public LayerMask roomLayer;
     //墙壁
     public WallType[] wall;
-
+    
     public EnemyController enemyController;
 
     void Start()
@@ -133,18 +133,19 @@ public class RoomController : MonoBehaviour
         endRoomVec.GetComponent<SpriteRenderer>().color = endColor;
     }
 
-    void SetRoomDoors(Room rom,Vector2 rompos,int roomindex)
+    void SetRoomDoors(Room rom, Vector2 rompos, int roomindex)
     {
-        rom.isUp = Physics2D.OverlapCircle(rompos + new Vector2(0, yOffset), 0.2f, roomLayer);
-        rom.isDown = Physics2D.OverlapCircle(rompos + new Vector2(0, -yOffset), 0.2f, roomLayer);
-        rom.isLeft = Physics2D.OverlapCircle(rompos + new Vector2(-xOffset,0), 0.2f, roomLayer);
-        rom.isRight = Physics2D.OverlapCircle(rompos + new Vector2(xOffset,0), 0.2f, roomLayer);
+        rom.doorDatas[0].SetActive(Physics2D.OverlapCircle(rompos + new Vector2(0, yOffset), 0.2f, roomLayer));
+        rom.doorDatas[1].SetActive(Physics2D.OverlapCircle(rompos + new Vector2(0, -yOffset), 0.2f, roomLayer));
+        rom.doorDatas[2].SetActive(Physics2D.OverlapCircle(rompos + new Vector2(-xOffset, 0), 0.2f, roomLayer));
+        rom.doorDatas[3].SetActive(Physics2D.OverlapCircle(rompos + new Vector2(xOffset, 0), 0.2f, roomLayer));
 
         CreateRoomWall(rom, rompos).transform.parent = rooms[roomindex].transform;
     }
 
     GameObject CreateRoomWall(Room rom,Vector2 rompos)
     {
+        //                                         ↓这是墙的类别↓
         return Instantiate(wall[rom.GetWallIndex()].wallFrefab[0], rompos, Quaternion.identity);
     }
 }

@@ -5,10 +5,7 @@ using System;
 
 public class Room : MonoBehaviour
 {
-    public GameObject upDoor,downDoor,leftDoor,rightDoor;
-
-    [HideInInspector]
-    public bool isUp, isDown, isLeft, isRight;
+    public List<GameObject> doorDatas = new List<GameObject>();
 
     string wallIndex;
 
@@ -19,22 +16,12 @@ public class Room : MonoBehaviour
         instance = this;
     }
 
-    void Start()
-    {
-        upDoor.SetActive(isUp);
-        downDoor.SetActive(isDown);
-        leftDoor.SetActive(isLeft);
-        rightDoor.SetActive(isRight);
-    }
-
     public int GetWallIndex()
     {
         wallIndex = "";
 
-        GetIndex(isUp);
-        GetIndex(isDown);
-        GetIndex(isLeft);
-        GetIndex(isRight);
+        for (var i = 0; i < doorDatas.Count; i++)
+            GetIndex(doorDatas[i].activeSelf);
 
         return Convert.ToInt32(wallIndex, 2) - 1;
     }
@@ -46,6 +33,7 @@ public class Room : MonoBehaviour
         else
             return wallIndex += "0";
     }
+
 }
 
 [Serializable]

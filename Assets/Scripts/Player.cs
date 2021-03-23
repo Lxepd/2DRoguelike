@@ -82,4 +82,19 @@ public class Player : MonoBehaviour
     {
         speed = cspeed;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //TODO:钥匙开门？找npc开门？…………
+        //看情况改
+
+        if (collision.transform.tag == "UDoor")
+            transform.position += new Vector3(0, 2, 0);
+        else if (collision.transform.tag == "DDoor")
+            transform.position += new Vector3(0, -2, 0);
+        else if (collision.transform.tag == "LDoor")
+            transform.position += new Vector3(-3, 0, 0);
+        else if (collision.transform.tag == "RDoor")
+            transform.position += new Vector3(3, 0, 0);
+    }
 }

@@ -398,7 +398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 0
   roomprefab: {fileID: 4594557587055746483, guid: 21d0771994fb42440a54c1b70436a58d, type: 3}
-  xOffset: 18
+  xOffset: 19
   yOffset: 10
   roomsNum: 10
   startColor: {r: 0, g: 1, b: 0, a: 1}
