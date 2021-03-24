@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 839355749}
   - component: {fileID: 839355748}
   - component: {fileID: 839355747}
+  - component: {fileID: 839355750}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -230,12 +231,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 839355746}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &839355750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839355746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1532176790c14dd4d8633bc2ca729b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 35
 --- !u!1 &850630580
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +519,6 @@ MonoBehaviour:
     cEnemyKind: "\u53F2\u83B1\u59C6"
     cEnemyExplain: "\u4E00\u79CD\u9ECF\u7CCA\u7CCA\u7684\u7403\u72B6\u9B54\u7269"
   roomController: {fileID: 986445876}
-  enemyNum: 5
   roomEnemyParent: {fileID: 710722900}
 --- !u!1 &1558535524
 GameObject:
@@ -548,6 +561,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8164685271148666786, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164685271148666786, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8164685271148666796, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}

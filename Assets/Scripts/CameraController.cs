@@ -6,7 +6,11 @@ public class CameraController : MonoBehaviour
 {
     public static CameraController instance;
 
-    public Vector3 target;
+    Transform target;
+
+    Vector3 fristPoint = new Vector3(0,1,-10);
+
+    public float speed;
 
     private void Awake()
     {
@@ -15,11 +19,13 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        
+        if (target != null)
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x,
+                target.position.y, target.position.z)+fristPoint, speed * Time.deltaTime);
     }
 
-    public void UpdateCameraPos(Vector3 pos)
+    public void UpdateCameraPos(Transform newPos)
     {
-        transform.position += pos;
+        target = newPos;
     }
 }

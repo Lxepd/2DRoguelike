@@ -6,10 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Wall
-  - UDoor
-  - DDoor
-  - LDoor
-  - RDoor
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -21,7 +18,7 @@ TagManager:
   - Player
   - Enemy
   - Joint
-  - 
+  - Door
   - 
   - 
   - 

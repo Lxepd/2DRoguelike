@@ -9,8 +9,9 @@ public class EnemyController : MonoBehaviour
     public EnemyData[] enemyDatas;
     public RoomController roomController;
 
-    public int enemyNum;
     public Transform roomEnemyParent;
+
+    int enemyNum;
 
     private void Awake()
     {
@@ -23,7 +24,9 @@ public class EnemyController : MonoBehaviour
 
     void EnemyCreate()
     {
-        for (var i = 0; i < roomController.roomPoints.Count; i++)
+        enemyNum = Random.Range(3, 6);
+
+        for (var i = 1; i < roomController.roomPoints.Count-1; i++)
             for (var j = 0; j < enemyNum; j++)
             {
                GameObject go = Instantiate(enemyDatas[0].cEnemyPrefabs, SwitchCreatePos(roomController.roomPoints[i]),
@@ -53,6 +56,4 @@ public class EnemyController : MonoBehaviour
 
         return roomPos;
     }
-
-
 }
