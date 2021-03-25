@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8164685269638185067}
+  - component: {fileID: 72362436}
+  - component: {fileID: 7594534697189304412}
   m_Layer: 7
   m_Name: AttackPos
   m_TagString: Untagged
@@ -24,12 +26,41 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8164685269638185064}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.076, y: 0, z: 0}
+  m_LocalPosition: {x: 0.351, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8164685271148666796}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &72362436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8164685269638185064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c06a89b8f40437b42b1b95a7ca3d7e48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackGo: []
+--- !u!70 &7594534697189304412
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8164685269638185064}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.08241773, y: 0.011238727}
+  m_Size: {x: 0.33516458, y: 0.72277683}
+  m_Direction: 0
 --- !u!1 &8164685271148666786
 GameObject:
   m_ObjectHideFlags: 0
@@ -46,7 +77,7 @@ GameObject:
   - component: {fileID: 8164685271148666793}
   m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,7 +136,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1857709717
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -1440518041077064095, guid: e436dcdd71d7bdc4e8df84f5264ad7e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -129,14 +160,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ca966068dac074394ae619fd269af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  playerData:
+    speed: 0
+  equipmentData:
+  - cEquipment: {fileID: 0}
+    cAttackRange: 0.56
   startTimeToAttack: 0.3
   timeToAttack: 0
   attackPos: {fileID: 8164685269638185067}
-  attackRange: 0.59
   hurtMask:
     serializedVersion: 2
     m_Bits: 256
+  isAttack: 0
 --- !u!95 &8164685271148666799
 Animator:
   serializedVersion: 3

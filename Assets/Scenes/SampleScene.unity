@@ -268,7 +268,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &850630581
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -559,12 +559,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8164685271148666786, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
-      propertyPath: m_Name
-      value: Player
+    - target: {fileID: 7594534697189304412, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8164685271148666786, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
-      propertyPath: m_TagString
+      propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8164685271148666796, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
@@ -610,18 +610,6 @@ PrefabInstance:
     - target: {fileID: 8164685271148666796, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8164685271148666797, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
-      propertyPath: m_SortingLayer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8164685271148666797, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8164685271148666797, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 1857709717
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}

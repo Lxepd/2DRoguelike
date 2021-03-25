@@ -20,7 +20,8 @@ public class EnemyBehaviorController : MonoBehaviour
     public enum Behaviour
     { 
         idle,
-        move
+        move,
+        attack
     }
     public Behaviour behaviour;
 
@@ -47,13 +48,37 @@ public class EnemyBehaviorController : MonoBehaviour
     //当前移动次数记录
     int moveKeep;
 
+    public float hp;
+    int index;
+
+    float attackTime;
+    bool localScaleTurn;
+
+    public LayerMask playerMask;
+    public int attackRange;
+    public bool isCanAttack;
+
+    public static EnemyBehaviorController instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         speed = 0;
         isCanMove = true;
+        isCanAttack = false;
         anima = GetComponent<Animator>();
         nextMoveNum = 0;
         moveKeep = 0;
+
+        for (var i = 0; i < EnemyController.instance.enemyDatas.Length; i++)
+            if (transform.CompareTag(EnemyController.instance.enemyDatas[i].cEnemyKind))
+                index = i;
+
+        hp = EnemyController.instance.enemyDatas[index].cHp;
     }
 
     private void Update()
@@ -64,7 +89,10 @@ public class EnemyBehaviorController : MonoBehaviour
             animaTime = animaNextTime;
         }
         else
+        {
             animaTime -= Time.deltaTime;
+            attackTime -= Time.deltaTime;
+        }
 
         if (Vector2.Distance(transform.position, targetPos) == 0)
             isCanMove = true;
@@ -80,25 +108,35 @@ public class EnemyBehaviorController : MonoBehaviour
         
     }
 
-    public void IsHurt()
-    {
-        Debug.Log("不要打我啊，好痛啊，呜呜呜/(ㄒoㄒ)/~~");
-    }
-
     void SwitchAnim()
     {
         if (nextMoveNum == 0 || moveKeep == nextMoveNum)
-            behaviour = (Behaviour)Random.Range(0, 2);
+            behaviour = (Behaviour)Random.Range(0, 3);
         else if (Vector3.Distance(transform.position, targetPos) != 0)
             behaviour = Behaviour.move;
+
+        if (CheckIsAttack() && attackTime <= 0)
+        {
+            isCanAttack = true;
+            animaTime = animaNextTime;
+        }
+        else
+            isCanAttack = false;
 
         switch (behaviour)
         {
             case Behaviour.idle:
                 break;
-            case Behaviour.move:              
+            case Behaviour.move:
                 MoveTimesDecide();
                 TargetDecide();
+                break;
+            case Behaviour.attack:
+                if (isCanAttack)
+                {
+                    Attack();
+                    attackTime = 2;
+                }
                 break;
         }
     }
@@ -130,8 +168,20 @@ public class EnemyBehaviorController : MonoBehaviour
     {
         //决定移动方向
         if (moveKeep == nextMoveNum)
+        {
             while (direction == lastDirection)
                 direction = (Direction)Random.Range(0, 8);
+
+            if ((lastDirection == (Direction)2 || lastDirection == (Direction)4 || lastDirection == (Direction)6)
+                   && (direction == (Direction)3 || direction == (Direction)5 || direction == (Direction)7))
+                localScaleTurn = true;
+            else if ((lastDirection == (Direction)3 || lastDirection == (Direction)5 || lastDirection == (Direction)7)
+                  && (direction == (Direction)2 || direction == (Direction)4 || direction == (Direction)6))
+                localScaleTurn = true;
+            else
+                localScaleTurn = false;
+
+        }
 
         lastDirection = direction;
         //首次移动
@@ -169,6 +219,9 @@ public class EnemyBehaviorController : MonoBehaviour
 
         targetPos += moreTimeMove;
         t = Vector2.Distance(transform.position, targetPos) * Time.deltaTime / speed;
+
+        if(localScaleTurn)
+            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
     }
 
     void SetMoveSpeed(float cspeed)
@@ -176,10 +229,33 @@ public class EnemyBehaviorController : MonoBehaviour
         speed = cspeed * 0.1f;
     }
 
+    bool CheckIsAttack()
+    {
+        return Physics2D.OverlapCircle(transform.position, attackRange, playerMask);
+    }
+
+    void Attack()
+    {
+        Collider2D col = Physics2D.OverlapCircle(transform.position, attackRange, playerMask);
+        //玩家在怪物左边
+        if (col.transform.position.y - transform.position.y < 0)
+            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+
+        anima.SetTrigger("attack");
+
+        col.GetComponent<Player>().IsHurt();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.CompareTag("Wall"))
             moreTimeMove *= -1;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 
 }

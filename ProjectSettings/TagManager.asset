@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Wall
   - Door
+  - "\u53F2\u83B1\u59C6"
   layers:
   - Default
   - TransparentFX

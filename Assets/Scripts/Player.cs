@@ -8,18 +8,29 @@ public class Player : MonoBehaviour
     Rigidbody2D rg2d;
 
     Vector2 keyPos;
-    public float speed;
+
+    public PlayerData playerData;
+    public EquipmentData[] equipmentData;
 
     public float startTimeToAttack;
     public float timeToAttack;
 
     public Transform attackPos;
-    public float attackRange;
+
     public LayerMask hurtMask;
+
+    public bool isAttack;
+
+    public static Player instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
-        speed = 4;
+        playerData.speed = 4;
         anima = GetComponent<Animator>();
         rg2d = GetComponent<Rigidbody2D>();
     }
@@ -42,13 +53,14 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rg2d.MovePosition(rg2d.position + keyPos * speed * Time.fixedDeltaTime);
+        rg2d.MovePosition(rg2d.position + keyPos * playerData.speed * Time.fixedDeltaTime);
     }
 
     void SwitchAnima()
     {
         anima.SetFloat("speed", keyPos.magnitude);
 
+        isAttack = false;
         Attack();
     }
 
@@ -58,10 +70,8 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.J))
             {
-                Collider2D[] enemyToDamage =
-                    Physics2D.OverlapCircleAll(attackPos.position, attackRange, hurtMask);
-
-                for (var i = 0; i < enemyToDamage.Length; i++)
+                if (AttackCollder.instance.AttackGo.Count != 0)
+                    isAttack = true;
 
                 anima.SetTrigger("Attack");
                 timeToAttack = startTimeToAttack;
@@ -72,16 +82,34 @@ public class Player : MonoBehaviour
 
     }
 
+    public void IsHurt()
+    {
+        //Debug.Log("不要打我啊，好痛啊，呜呜呜/(ㄒoㄒ)/~~\nBy player");
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPos.position, attackRange);
+        Gizmos.DrawWireSphere(attackPos.position, equipmentData[0].cAttackRange);
     }
 
     public void ChangeSpeed(float cspeed)
     {
-        speed = cspeed;
+        playerData.speed = cspeed;
     }
 
-   
+}
+
+[System.Serializable]
+public class PlayerData
+{
+    [HideInInspector]
+    public float speed;
+
+}
+[System.Serializable]
+public class EquipmentData
+{
+    public Sprite cEquipment;
+    public float cAttackRange;
 }
