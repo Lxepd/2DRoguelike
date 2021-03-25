@@ -9,6 +9,8 @@ public class EnemyData
     public GameObject cEnemyPrefabs;
     public float cSpeed;
     public float cHp;
+    public float cDamage;
     public string cEnemyKind;
     public string cEnemyExplain;
+
 }

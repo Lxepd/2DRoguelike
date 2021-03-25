@@ -21,9 +21,12 @@ public class EnemyBehaviorController : MonoBehaviour
     { 
         idle,
         move,
-        attack
+        attack,
+        die
     }
     public Behaviour behaviour;
+
+    public bool isDeath;
 
     //ÐÐÎª¼ä¸ô
     public float animaNextTime;
@@ -49,13 +52,14 @@ public class EnemyBehaviorController : MonoBehaviour
     int moveKeep;
 
     public float hp;
+    public float damage;
     int index;
 
     float attackTime;
     bool localScaleTurn;
 
     public LayerMask playerMask;
-    public int attackRange;
+    public float attackRange;
     public bool isCanAttack;
 
     public static EnemyBehaviorController instance;
@@ -73,16 +77,24 @@ public class EnemyBehaviorController : MonoBehaviour
         anima = GetComponent<Animator>();
         nextMoveNum = 0;
         moveKeep = 0;
+        isDeath = false;
 
         for (var i = 0; i < EnemyController.instance.enemyDatas.Length; i++)
             if (transform.CompareTag(EnemyController.instance.enemyDatas[i].cEnemyKind))
                 index = i;
 
         hp = EnemyController.instance.enemyDatas[index].cHp;
+        damage = EnemyController.instance.enemyDatas[index].cDamage;
     }
 
     private void Update()
     {
+        if (isDeath)
+        {
+
+            return;
+        }
+
         if (animaTime <= 0 && (isCanMove || !isCanMove))
         {
             SwitchAnim();

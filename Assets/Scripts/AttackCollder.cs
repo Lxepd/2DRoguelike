@@ -13,7 +13,7 @@ public class AttackCollder : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
+    }   
 
     private void Update()
     {
@@ -34,7 +34,8 @@ public class AttackCollder : MonoBehaviour
         if (obj.GetComponent<EnemyBehaviorController>().hp == 0)
         {
             AttackGo.Remove(obj);
-            Destroy(obj);
+            obj.GetComponent<EnemyBehaviorController>().isDeath = true;
+
         }
 
     }

@@ -30,9 +30,11 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        playerData.speed = 4;
+        playerData.cSpeed = 4;
         anima = GetComponent<Animator>();
         rg2d = GetComponent<Rigidbody2D>();
+
+        playerData.cHp = 10;
     }
 
     private void Update()
@@ -53,7 +55,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rg2d.MovePosition(rg2d.position + keyPos * playerData.speed * Time.fixedDeltaTime);
+        rg2d.MovePosition(rg2d.position + keyPos * playerData.cSpeed * Time.fixedDeltaTime);
     }
 
     void SwitchAnima()
@@ -87,15 +89,9 @@ public class Player : MonoBehaviour
         //Debug.Log("不要打我啊，好痛啊，呜呜呜/(ㄒoㄒ)/~~\nBy player");
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPos.position, equipmentData[0].cAttackRange);
-    }
-
     public void ChangeSpeed(float cspeed)
     {
-        playerData.speed = cspeed;
+        playerData.cSpeed = cspeed;
     }
 
 }
@@ -104,8 +100,8 @@ public class Player : MonoBehaviour
 public class PlayerData
 {
     [HideInInspector]
-    public float speed;
-
+    public float cSpeed;
+    public float cHp;
 }
 [System.Serializable]
 public class EquipmentData
