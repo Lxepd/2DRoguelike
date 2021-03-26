@@ -18,7 +18,7 @@ public class EnemyBehaviorController : MonoBehaviour
     public Direction direction;
 
     public enum Behaviour
-    { 
+    {
         idle,
         move,
         attack,
@@ -61,15 +61,17 @@ public class EnemyBehaviorController : MonoBehaviour
 
     public LayerMask playerMask;
     public float attackRange;
+    //判断是否允许攻击
     public bool isCanAttack;
+    //判断是否已经分裂
+    public int isDivision;
 
     public static EnemyBehaviorController instance;
-
+    string objname;
     private void Awake()
     {
         instance = this;
     }
-
     private void Start()
     {
         speed = 0;
@@ -81,18 +83,32 @@ public class EnemyBehaviorController : MonoBehaviour
         isDeath = false;
 
         for (var i = 0; i < EnemyController.instance.enemyDatas.Length; i++)
-            if (transform.CompareTag(EnemyController.instance.enemyDatas[i].cEnemyKind))
+            if(name == EnemyController.instance.enemyDatas[i].cEnemyPrefabs.name + "(Clone)")
                 index = i;
 
         hp = EnemyController.instance.enemyDatas[index].cHp;
         damage = EnemyController.instance.enemyDatas[index].cDamage;
+        objname = EnemyController.instance.enemyDatas[index].cEnemyPrefabs.name;
     }
 
     private void Update()
     {
-        if (isDeath)
+        if (isDeath && EnemyController.instance.enemyDatas[index].cBigEnemy)
         {
-            anima.Play("death");
+            if (isDivision == 1)
+            {
+                SwitchEnemySkill(EnemyController.instance.enemyDatas[index].cEnemyKind);
+                isDivision++;
+                Destroy(gameObject);
+            }
+            else
+                anima.Play(objname + "skill");
+
+            return;
+        }
+        else if (isDeath && !EnemyController.instance.enemyDatas[index].cBigEnemy)
+        {
+            anima.Play(objname + "death");
             return;
         }
 
@@ -128,7 +144,7 @@ public class EnemyBehaviorController : MonoBehaviour
             t += Time.fixedDeltaTime;
             transform.position = Vector2.Lerp(transform.position, targetPos, t);
         }
-        
+
     }
 
     void SwitchAnim()
@@ -138,7 +154,7 @@ public class EnemyBehaviorController : MonoBehaviour
         else if (Vector3.Distance(transform.position, targetPos) != 0)
             behaviour = Behaviour.move;
 
-        if(isCanAttack)
+        if (isCanAttack)
             behaviour = Behaviour.attack;
 
         switch (behaviour)
@@ -150,8 +166,8 @@ public class EnemyBehaviorController : MonoBehaviour
                 TargetDecide();
                 break;
             case Behaviour.attack:
-                    Attack();
-                    attackTime = 0;
+                Attack();
+                attackTime = 0;
                 break;
         }
     }
@@ -168,11 +184,11 @@ public class EnemyBehaviorController : MonoBehaviour
         moveKeep++;
         //重复移动
         if (moveKeep != 1)
-        {      
+        {
             isCanMove = false;
             targetPos = transform.position;
             targetPos += moreTimeMove;
-            anima.SetTrigger("move");
+            anima.SetTrigger(objname + "move");
             t = Vector2.Distance(transform.position, targetPos) * Time.deltaTime / speed;
 
             return;
@@ -202,7 +218,8 @@ public class EnemyBehaviorController : MonoBehaviour
         //首次移动
         isCanMove = false;
         targetPos = transform.position;
-        anima.SetTrigger("move");
+        anima.SetTrigger(objname + "move");
+
 
         switch (direction)
         {
@@ -235,13 +252,8 @@ public class EnemyBehaviorController : MonoBehaviour
         targetPos += moreTimeMove;
         t = Vector2.Distance(transform.position, targetPos) * Time.deltaTime / speed;
 
-        if(localScaleTurn)
+        if (localScaleTurn)
             transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
-    }
-
-    void SetMoveSpeed(float cspeed)
-    {      
-        speed = cspeed * 0.1f;
     }
 
     bool CheckIsAttack()
@@ -256,7 +268,7 @@ public class EnemyBehaviorController : MonoBehaviour
         if (col.transform.position.y - transform.position.y < 0)
             transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
 
-        anima.SetTrigger("attack");
+        anima.SetTrigger(objname + "attack");
 
         Player.instance.isHurt = true;
     }
@@ -273,4 +285,25 @@ public class EnemyBehaviorController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 
+    void SwitchEnemySkill(string tag)
+    {
+        switch(tag)
+        {
+            case "史莱姆":
+                for (var i = 0; i < 2; i++)
+                    Instantiate(EnemyController.instance.enemyDatas[0].cEnemyPrefabs,
+                        new Vector3(transform.position.x - 0.6f + i * 1.2f, transform.position.y,
+                        transform.position.z), Quaternion.identity);
+                break;
+        }
+    }
+    //关键帧事件
+    void SetMoveSpeed(float setSpeed)
+    {
+        speed = setSpeed * 0.1f;
+    }
+    void SetDivision(int div)
+    {
+        isDivision = div;
+    }
 }

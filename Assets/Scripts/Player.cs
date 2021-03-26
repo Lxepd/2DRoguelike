@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
 
     void SwitchAnima()
     {
-        anima.SetFloat("speed", keyPos.magnitude);
+        anima.SetFloat(name + "speed", keyPos.magnitude);
 
         isAttack = false;
         Attack();
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
                 if (AttackCollder.instance.AttackGo.Count != 0)
                     isAttack = true;
 
-                anima.SetTrigger("Attack");
+                anima.SetTrigger(name + "Attack");
                 timeToAttack = startTimeToAttack;
             }
         }

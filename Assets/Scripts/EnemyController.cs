@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour
         for (var i = 1; i < roomController.roomPoints.Count-1; i++)
             for (var j = 0; j < enemyNum; j++)
             {
-               GameObject go = Instantiate(enemyDatas[0].cEnemyPrefabs, SwitchCreatePos(roomController.roomPoints[i]),
+               GameObject go = Instantiate(SwitchEnemy(), SwitchCreatePos(roomController.roomPoints[i]),
                     Quaternion.identity);
                 go.transform.parent = roomController.rooms[i].transform;
             }
@@ -55,5 +55,12 @@ public class EnemyController : MonoBehaviour
         }
 
         return roomPos;
+    }
+
+    GameObject SwitchEnemy()
+    {
+        int enemyInAllEnemy = Random.Range(0, enemyDatas.Length);
+
+        return enemyDatas[enemyInAllEnemy].cEnemyPrefabs;
     }
 }

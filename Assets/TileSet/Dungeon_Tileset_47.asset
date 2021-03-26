@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: Dungeon_Tileset_47
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 8185415898879777628, guid: 573299dca49cb0542988759729dcad27, type: 3}
+  m_Sprite: {fileID: 8185415898879777628, guid: 92d6cedcb7afaba4aac03a54b1e115da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
