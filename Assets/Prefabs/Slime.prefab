@@ -100,14 +100,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 0
   behaviour: 0
+  isDeath: 0
   animaNextTime: 0.7
   animaTime: 0
   isCanMove: 0
   hp: 0
+  damage: 0
+  attackTime: 0
+  attackNextTime: 2
   playerMask:
     serializedVersion: 2
-    m_Bits: 0
-  attackRange: 0
+    m_Bits: 128
+  attackRange: 0.6
   isCanAttack: 0
 --- !u!95 &6825860519174281101
 Animator:
@@ -156,8 +160,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
+  m_Mass: 3
+  m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}

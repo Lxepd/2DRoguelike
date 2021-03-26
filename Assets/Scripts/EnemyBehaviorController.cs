@@ -55,7 +55,8 @@ public class EnemyBehaviorController : MonoBehaviour
     public float damage;
     int index;
 
-    float attackTime;
+    public float attackTime;
+    public float attackNextTime;
     bool localScaleTurn;
 
     public LayerMask playerMask;
@@ -91,11 +92,20 @@ public class EnemyBehaviorController : MonoBehaviour
     {
         if (isDeath)
         {
-
+            anima.Play("death");
             return;
         }
 
-        if (animaTime <= 0 && (isCanMove || !isCanMove))
+        if (CheckIsAttack())
+        {
+            if (attackTime >= attackNextTime)
+            {
+                isCanAttack = true;
+                SwitchAnim();
+            }
+            attackTime += Time.deltaTime;
+        }
+        else if (animaTime <= 0 && (isCanMove || !isCanMove))
         {
             SwitchAnim();
             animaTime = animaNextTime;
@@ -103,7 +113,8 @@ public class EnemyBehaviorController : MonoBehaviour
         else
         {
             animaTime -= Time.deltaTime;
-            attackTime -= Time.deltaTime;
+            attackTime = 0;
+            isCanAttack = false;
         }
 
         if (Vector2.Distance(transform.position, targetPos) == 0)
@@ -123,17 +134,12 @@ public class EnemyBehaviorController : MonoBehaviour
     void SwitchAnim()
     {
         if (nextMoveNum == 0 || moveKeep == nextMoveNum)
-            behaviour = (Behaviour)Random.Range(0, 3);
+            behaviour = (Behaviour)Random.Range(0, 2);
         else if (Vector3.Distance(transform.position, targetPos) != 0)
             behaviour = Behaviour.move;
 
-        if (CheckIsAttack() && attackTime <= 0)
-        {
-            isCanAttack = true;
-            animaTime = animaNextTime;
-        }
-        else
-            isCanAttack = false;
+        if(isCanAttack)
+            behaviour = Behaviour.attack;
 
         switch (behaviour)
         {
@@ -144,11 +150,8 @@ public class EnemyBehaviorController : MonoBehaviour
                 TargetDecide();
                 break;
             case Behaviour.attack:
-                if (isCanAttack)
-                {
                     Attack();
-                    attackTime = 2;
-                }
+                    attackTime = 0;
                 break;
         }
     }
@@ -255,7 +258,7 @@ public class EnemyBehaviorController : MonoBehaviour
 
         anima.SetTrigger("attack");
 
-        col.GetComponent<Player>().IsHurt();
+        Player.instance.isHurt = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

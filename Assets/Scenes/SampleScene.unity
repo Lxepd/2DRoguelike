@@ -560,9 +560,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6825860519174281100, guid: 72a168beaff905046a47f9edecb6c8fd, type: 3}
-      propertyPath: attackRange
-      value: 0.5
+    - target: {fileID: 6825860519174281102, guid: 72a168beaff905046a47f9edecb6c8fd, type: 3}
+      propertyPath: m_LinearDrag
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6825860519174281104, guid: 72a168beaff905046a47f9edecb6c8fd, type: 3}
       propertyPath: m_Name

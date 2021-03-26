@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     public LayerMask hurtMask;
 
     public bool isAttack;
+    public bool isHurt;
 
     public static Player instance;
 
@@ -40,6 +41,9 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Move();
+
+        if (isHurt)
+            Hurt();
     }
 
     void Move()
@@ -84,9 +88,10 @@ public class Player : MonoBehaviour
 
     }
 
-    public void IsHurt()
+    public void Hurt()
     {
-        //Debug.Log("不要打我啊，好痛啊，呜呜呜/(ㄒoㄒ)/~~\nBy player");
+        Debug.Log("不要打我啊，好痛啊，呜呜呜/(ㄒoㄒ)/~~\nBy player");
+        isHurt = false;
     }
 
     public void ChangeSpeed(float cspeed)
