@@ -118,7 +118,7 @@ public class EnemyBehaviorController : MonoBehaviour
             EnemyController.instance.ReMoveDeathEnemy(roomindex, gameObject);
             enabled = false;
             return;
-        }a
+        }
 
         if (CheckIsAttack())
         {
