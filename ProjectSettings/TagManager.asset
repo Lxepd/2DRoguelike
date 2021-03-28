@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Door
   - "\u53F2\u83B1\u59C6"
+  - "\u8759\u8760"
   layers:
   - Default
   - TransparentFX

@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
         keyPos.y = Input.GetAxisRaw("Vertical");
 
         if (keyPos.x != 0)
-            transform.localScale = new Vector2(keyPos.x * 1.65f, transform.localScale.y);
+            transform.localScale = new Vector2(keyPos.x * 2f, transform.localScale.y);
 
         SwitchAnima();
     }

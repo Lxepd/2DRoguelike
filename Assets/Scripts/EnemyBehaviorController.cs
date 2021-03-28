@@ -92,6 +92,8 @@ public class EnemyBehaviorController : MonoBehaviour
         hp = EnemyController.instance.enemyDatas[index].cHp;
         damage = EnemyController.instance.enemyDatas[index].cDamage;
         objname = EnemyController.instance.enemyDatas[index].cEnemyPrefabs.name;
+
+        Debug.Log(objname);
     }
 
     private void Update()
@@ -113,7 +115,6 @@ public class EnemyBehaviorController : MonoBehaviour
         else if (isDeath && !EnemyController.instance.enemyDatas[index].cBigEnemy)
         {
             anima.Play(objname + "Death");
-            Debug.LogError(111);
             EnemyController.instance.ReMoveDeathEnemy(roomindex, gameObject);
             enabled = false;
             return;

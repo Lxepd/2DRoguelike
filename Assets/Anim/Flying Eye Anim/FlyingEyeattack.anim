@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FlyingEyeattack
+  m_Name: FlyingEyeAttack
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -33,7 +33,9 @@ AnimationClip:
       value: {fileID: 221524225039350300, guid: b9754c8f4d6ec79459fb8b4f8d6b388a, type: 3}
     - time: 0.5
       value: {fileID: 1290532464073988732, guid: b9754c8f4d6ec79459fb8b4f8d6b388a, type: 3}
-    - time: 0.5833333
+    - time: 0.6666667
+      value: {fileID: 4780903288873104255, guid: b9754c8f4d6ec79459fb8b4f8d6b388a, type: 3}
+    - time: 0.75
       value: {fileID: 4780903288873104255, guid: b9754c8f4d6ec79459fb8b4f8d6b388a, type: 3}
     attribute: m_Sprite
     path: 
@@ -62,12 +64,13 @@ AnimationClip:
     - {fileID: 221524225039350300, guid: b9754c8f4d6ec79459fb8b4f8d6b388a, type: 3}
     - {fileID: 1290532464073988732, guid: b9754c8f4d6ec79459fb8b4f8d6b388a, type: 3}
     - {fileID: 4780903288873104255, guid: b9754c8f4d6ec79459fb8b4f8d6b388a, type: 3}
+    - {fileID: 4780903288873104255, guid: b9754c8f4d6ec79459fb8b4f8d6b388a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666666
+    m_StopTime: 0.8333333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

@@ -8,7 +8,7 @@ public class AttackCollder : MonoBehaviour
 
     public List<GameObject> AttackGo = new List<GameObject>();
 
-    int enemyKindNum;
+    string enemyKind;
 
     private void Awake()
     {
@@ -43,14 +43,18 @@ public class AttackCollder : MonoBehaviour
     {
         for (var i = 0; i < EnemyController.instance.enemyDatas.Length; i++)
             if (obj.CompareTag(EnemyController.instance.enemyDatas[i].cEnemyKind))
-                enemyKindNum = i;
+            {
+                enemyKind = EnemyController.instance.enemyDatas[i].cEnemyKind;
+                break;
+            }
 
-        switch (enemyKindNum)
+        switch (enemyKind)
         {
-            case 0://Ê·À³Ä·
+            case "Ê·À³Ä·":
                 DamageToHp(obj, 1);
                 break;
-            case 1:
+            case "òùòð":
+                DamageToHp(obj, 1);
                 break;
         }
 
@@ -58,7 +62,7 @@ public class AttackCollder : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy") && !collision.GetComponent<EnemyBehaviorController>().isDeath)
+        if (collision.gameObject.layer == 8 &&!collision.GetComponent<EnemyBehaviorController>().isDeath)
             AttackGo.Add(collision.gameObject);
     }
     private void OnTriggerExit2D(Collider2D collision)
