@@ -21,7 +21,8 @@ public class CameraController : MonoBehaviour
     {
         if (target != null)
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x,
-                target.position.y, target.position.z)+fristPoint, speed * Time.deltaTime);
+                target.position.y, target.position.z) + fristPoint, speed * Time.deltaTime);
+
     }
 
     public void UpdateCameraPos(Transform newPos)

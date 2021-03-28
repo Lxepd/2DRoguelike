@@ -31,10 +31,15 @@ public class RoomController : MonoBehaviour
 
     public Transform roomParent;
     int roomToWall = 0;
+    public int endRoomIndex;
 
+    //房间表
     public List<GameObject> rooms = new List<GameObject>();
     //房间坐标存放表
     public List<Vector2> roomPoints = new List<Vector2>();
+    //各房间怪物数量表
+    public List<int> enemyOfRoom = new List<int>();
+
     //下一个房间的位置
     Vector2 roomNextPos;
     //保存上一个房间的变量
@@ -73,6 +78,7 @@ public class RoomController : MonoBehaviour
     {
         //if (Input.anyKeyDown)
         //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
     }
 
     void CreateRoom()
@@ -119,16 +125,21 @@ public class RoomController : MonoBehaviour
         }
 
     }
-
+    
     void FindEndRoom()
     {
         rooms[0].GetComponent<SpriteRenderer>().color = startColor;
         GameObject endRoomVec = rooms[0];
 
         for (var i = 1; i < roomsNum; i++)
-            if (Vector2.Distance(rooms[i].transform.position, rooms[0].transform.position) > 
+        {
+            if (Vector2.Distance(rooms[i].transform.position, rooms[0].transform.position) >
                 Vector2.Distance(endRoomVec.transform.position, rooms[0].transform.position))
+            {
                 endRoomVec = rooms[i];
+                endRoomIndex = i;
+            }
+        }
 
         endRoomVec.GetComponent<SpriteRenderer>().color = endColor;
     }
@@ -147,5 +158,11 @@ public class RoomController : MonoBehaviour
     {
         //                                         ↓这是墙的类别↓
         return Instantiate(wall[rom.GetWallIndex()].wallFrefab[0], rompos, Quaternion.identity);
+    }
+
+    bool CheckEnemyNum()
+    {
+
+        return false;
     }
 }

@@ -13,6 +13,8 @@ public class EnemyController : MonoBehaviour
 
     int enemyNum;
 
+    public EnemyInRoom[] eir;
+
     private void Awake()
     {
         instance = this;
@@ -21,18 +23,34 @@ public class EnemyController : MonoBehaviour
     {
         EnemyCreate();
     }
+    private void Update()
+    {
+        //Debug.Log(CheckRoomEnemyIsZero());
+    }
 
     void EnemyCreate()
     {
-        enemyNum = Random.Range(3, 6);
+        eir[0].cEnemyNum = 0;
 
-        for (var i = 1; i < roomController.roomPoints.Count-1; i++)
-            for (var j = 0; j < enemyNum; j++)
+        for (var i = 1; i < roomController.roomPoints.Count; i++)
+        {
+            if (i == RoomController.instance.endRoomIndex)
+                continue;
+
+            enemyNum = Random.Range(3, 6);
+            eir[i].cEnemyNum = enemyNum;
+        
+            for (var j = 0; j < eir[i].cEnemyNum; j++)
             {
-               GameObject go = Instantiate(SwitchEnemy(), SwitchCreatePos(roomController.roomPoints[i]),
+                GameObject go = Instantiate(SwitchEnemy(), SwitchCreatePos(roomController.roomPoints[i]),
                     Quaternion.identity);
                 go.transform.parent = roomController.rooms[i].transform;
+                go.GetComponent<EnemyBehaviorController>().roomindex = i;
+                eir[i].cEnemy.Add(go);
+                
             }
+        }
+
     }
 
     Vector2 SwitchCreatePos(Vector2 roomPos)
@@ -63,4 +81,40 @@ public class EnemyController : MonoBehaviour
 
         return enemyDatas[enemyInAllEnemy].cEnemyPrefabs;
     }
+
+    public void SwitchEnemySkill(string tag, GameObject parent, int index)
+    {
+        GameObject go = null;
+
+        switch (tag)
+        {
+            case "Ê·À³Ä·":
+                for (var i = 0; i < 2; i++)
+                {
+                    go = Instantiate(enemyDatas[0].cEnemyPrefabs,
+                        new Vector3(parent.transform.position.x - 0.6f + i * 1.2f, parent.transform.position.y,
+                        parent.transform.position.z), Quaternion.identity);
+                    go.transform.parent = roomController.rooms[index].transform;
+                    go.GetComponent<EnemyBehaviorController>().roomindex = index;
+                    eir[index].cEnemy.Add(go);
+                }                    
+                break;
+        }
+
+    }
+
+    public bool CheckRoomEnemyIsZero(int index)
+    {
+        if (eir[index].cEnemy.Count == 0)
+            return true;
+
+        return false;
+    }
+
+    public void ReMoveDeathEnemy(int index, GameObject go)
+    {
+        eir[index].cEnemy.Remove(go);
+        instance.eir[index].ArrayUpdata();
+    }
 }
+

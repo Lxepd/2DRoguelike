@@ -13,3 +13,14 @@ public class EnemyData
     public string cEnemyExplain;
     public bool cBigEnemy;
 }
+[System.Serializable]
+public class EnemyInRoom
+{
+    public List<GameObject> cEnemy = new List<GameObject>();
+    public int cEnemyNum;
+
+    public void ArrayUpdata()
+    {
+        cEnemyNum = cEnemy.Count;
+    }
+}

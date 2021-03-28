@@ -33,9 +33,8 @@ public class AttackCollder : MonoBehaviour
 
         if (obj.GetComponent<EnemyBehaviorController>().hp == 0)
         {
-            AttackGo.Remove(obj);
             obj.GetComponent<EnemyBehaviorController>().isDeath = true;
-
+            AttackGo.Remove(obj);          
         }
 
     }
@@ -59,7 +58,7 @@ public class AttackCollder : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Enemy") && !collision.GetComponent<EnemyBehaviorController>().isDeath)
             AttackGo.Add(collision.gameObject);
     }
     private void OnTriggerExit2D(Collider2D collision)

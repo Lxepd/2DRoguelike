@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyBehaviorController : MonoBehaviour
 {
+    public int roomindex;
+
     public enum Direction
     {
         Up,
@@ -68,6 +70,7 @@ public class EnemyBehaviorController : MonoBehaviour
 
     public static EnemyBehaviorController instance;
     string objname;
+
     private void Awake()
     {
         instance = this;
@@ -83,7 +86,7 @@ public class EnemyBehaviorController : MonoBehaviour
         isDeath = false;
 
         for (var i = 0; i < EnemyController.instance.enemyDatas.Length; i++)
-            if(name == EnemyController.instance.enemyDatas[i].cEnemyPrefabs.name + "(Clone)")
+            if (name == EnemyController.instance.enemyDatas[i].cEnemyPrefabs.name + "(Clone)")
                 index = i;
 
         hp = EnemyController.instance.enemyDatas[index].cHp;
@@ -97,18 +100,22 @@ public class EnemyBehaviorController : MonoBehaviour
         {
             if (isDivision == 1)
             {
-                SwitchEnemySkill(EnemyController.instance.enemyDatas[index].cEnemyKind);
+                EnemyController.instance.SwitchEnemySkill(EnemyController.instance.enemyDatas[index].cEnemyKind, gameObject, roomindex);
+                EnemyController.instance.ReMoveDeathEnemy(roomindex, gameObject);
                 isDivision++;
                 Destroy(gameObject);
             }
             else
-                anima.Play(objname + "skill");
+                anima.Play(objname + "Skill");
 
             return;
         }
         else if (isDeath && !EnemyController.instance.enemyDatas[index].cBigEnemy)
         {
-            anima.Play(objname + "death");
+            anima.Play(objname + "Death");
+            Debug.LogError(111);
+            EnemyController.instance.ReMoveDeathEnemy(roomindex, gameObject);
+            enabled = false;
             return;
         }
 
@@ -188,7 +195,7 @@ public class EnemyBehaviorController : MonoBehaviour
             isCanMove = false;
             targetPos = transform.position;
             targetPos += moreTimeMove;
-            anima.SetTrigger(objname + "move");
+            anima.SetTrigger(objname + "Move");
             t = Vector2.Distance(transform.position, targetPos) * Time.deltaTime / speed;
 
             return;
@@ -218,7 +225,7 @@ public class EnemyBehaviorController : MonoBehaviour
         //首次移动
         isCanMove = false;
         targetPos = transform.position;
-        anima.SetTrigger(objname + "move");
+        anima.SetTrigger(objname + "Move");
 
 
         switch (direction)
@@ -265,10 +272,10 @@ public class EnemyBehaviorController : MonoBehaviour
     {
         Collider2D col = Physics2D.OverlapCircle(transform.position, attackRange, playerMask);
         //玩家在怪物左边
-        if (col.transform.position.y - transform.position.y < 0)
-            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+        //if (col.transform.position.y - transform.position.y < 0)
+        //    transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
 
-        anima.SetTrigger(objname + "attack");
+        anima.SetTrigger(objname + "Attack");
 
         Player.instance.isHurt = true;
     }
@@ -285,18 +292,7 @@ public class EnemyBehaviorController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 
-    void SwitchEnemySkill(string tag)
-    {
-        switch(tag)
-        {
-            case "史莱姆":
-                for (var i = 0; i < 2; i++)
-                    Instantiate(EnemyController.instance.enemyDatas[0].cEnemyPrefabs,
-                        new Vector3(transform.position.x - 0.6f + i * 1.2f, transform.position.y,
-                        transform.position.z), Quaternion.identity);
-                break;
-        }
-    }
+    
     //关键帧事件
     void SetMoveSpeed(float setSpeed)
     {
