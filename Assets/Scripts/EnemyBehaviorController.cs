@@ -279,6 +279,7 @@ public class EnemyBehaviorController : MonoBehaviour
         anima.SetTrigger(objname + "Attack");
 
         Player.instance.isHurt = true;
+        Player.instance.hpSum += damage;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

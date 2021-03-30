@@ -1,27 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    //动画机
     Animator anima;
+    //刚体
     Rigidbody2D rg2d;
-
+    //移动的变量
     Vector2 keyPos;
-
+    //玩家属性
     public PlayerData playerData;
+    //装备属性
     public EquipmentData[] equipmentData;
-
+    //初始攻击时间
     public float startTimeToAttack;
+    //判断是否允许攻击的时间
     public float timeToAttack;
-
+    //攻击判定点
     public Transform attackPos;
-
+    //伤害Mask
     public LayerMask hurtMask;
-
+    //检测是否已经攻击
     public bool isAttack;
+    //检测是否被攻击
     public bool isHurt;
-
+    //血条
+    public Slider hpSlider;
+    //累积收到的伤害
+    public float hpSum; 
+    /************************/
     public static Player instance;
 
     private void Awake()
@@ -35,15 +45,19 @@ public class Player : MonoBehaviour
         anima = GetComponent<Animator>();
         rg2d = GetComponent<Rigidbody2D>();
 
-        playerData.cHp = 10;
+        hpSlider.value = hpSlider.maxValue;
     }
 
     private void Update()
     {
-        Move();
+        if(hpSlider.value == 0)
+        {
+            anima.Play("PlayerDie");
+            return;
+        }
 
-        if (isHurt)
-            Hurt();
+        Move();
+        HpBarUpdate();
     }
 
     void Move()
@@ -88,17 +102,24 @@ public class Player : MonoBehaviour
 
     }
 
-    public void Hurt()
-    {
-        Debug.Log("不要打我啊，好痛啊，呜呜呜/(ㄒoㄒ)/~~\nBy player");
-        isHurt = false;
-    }
-
     public void ChangeSpeed(float cspeed)
     {
         playerData.cSpeed = cspeed;
     }
 
+    void HpBarUpdate()
+    {
+        if (isHurt)
+        {
+            Debug.Log("啊，被打了.jpg  //By Player");
+            anima.SetTrigger("PlayerHurt");
+            isHurt = false;
+        }
+        float buckleBloodSpeed = Time.deltaTime * 5;
+
+        hpSlider.value -= hpSum * buckleBloodSpeed;
+        hpSum -= hpSum * buckleBloodSpeed;
+    }
 }
 
 [System.Serializable]
@@ -106,7 +127,6 @@ public class PlayerData
 {
     [HideInInspector]
     public float cSpeed;
-    public float cHp;
 }
 [System.Serializable]
 public class EquipmentData

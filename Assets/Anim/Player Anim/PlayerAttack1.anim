@@ -94,6 +94,6 @@ AnimationClip:
     functionName: ChangeSpeed
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 2
+    floatParameter: 0
     intParameter: 2
     messageOptions: 0
