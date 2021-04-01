@@ -37,9 +37,6 @@ public class RoomController : MonoBehaviour
     public List<GameObject> rooms = new List<GameObject>();
     //房间坐标存放表
     public List<Vector2> roomPoints = new List<Vector2>();
-    //各房间怪物数量表
-    public List<int> enemyOfRoom = new List<int>();
-
     //下一个房间的位置
     Vector2 roomNextPos;
     //保存上一个房间的变量
@@ -79,6 +76,10 @@ public class RoomController : MonoBehaviour
         //if (Input.anyKeyDown)
         //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
+    }
+    private void FixedUpdate()
+    {
+        IsCanGoNextRoom();
     }
 
     void CreateRoom()
@@ -160,8 +161,41 @@ public class RoomController : MonoBehaviour
         return Instantiate(wall[rom.GetWallIndex()].wallFrefab[0], rompos, Quaternion.identity);
     }
 
-    bool CheckEnemyNum()
+    public void IsCanGoNextRoom()
     {
+        if (CheckEnemyIsNull())
+        {
+            for (var i = 0; i < rooms.Count; i++)
+            {
+                GameObject go = rooms[i];
+
+                for (var j = 0; j < Room.instance.doorDatas.Count; j++)
+                {
+                    if (!go.GetComponent<Room>().doorDatas[j].activeSelf)
+                        continue;
+
+                    go.GetComponent<Room>().doorDatas[j].GetComponent<BoxCollider2D>().enabled = false;
+                }
+            }
+        }
+        else if (!CheckEnemyIsNull())
+        {
+            GameObject go = rooms[Player.instance.playerIsRoomIndex];
+
+            for (var i = 0; i < Room.instance.doorDatas.Count; i++)
+            {
+                if (!go.GetComponent<Room>().doorDatas[i].activeSelf)
+                    continue;
+
+                go.GetComponent<Room>().doorDatas[i].GetComponent<BoxCollider2D>().enabled = true; ;
+            }
+        }
+    }
+
+    public bool CheckEnemyIsNull()
+    {
+        if (enemyController.eir[Player.instance.playerIsRoomIndex].cEnemy.Count == 0)
+            return true;
 
         return false;
     }

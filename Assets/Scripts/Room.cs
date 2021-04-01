@@ -16,6 +16,11 @@ public class Room : MonoBehaviour
         instance = this;
     }
 
+    private void Update()
+    {
+
+    }
+
     public int GetWallIndex()
     {
         wallIndex = "";

@@ -416,6 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 45
+  isCheck: 0
 --- !u!1 &850630580
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,7 +678,6 @@ MonoBehaviour:
   endRoomIndex: 0
   rooms: []
   roomPoints: []
-  enemyOfRoom: 
   roomLayer:
     serializedVersion: 2
     m_Bits: 64

@@ -23,4 +23,5 @@ public class EnemyInRoom
     {
         cEnemyNum = cEnemy.Count;
     }
+
 }

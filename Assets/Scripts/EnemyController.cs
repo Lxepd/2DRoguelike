@@ -25,7 +25,7 @@ public class EnemyController : MonoBehaviour
     }
     private void Update()
     {
-        //Debug.Log(CheckRoomEnemyIsZero());
+        
     }
 
     void EnemyCreate()
@@ -39,7 +39,7 @@ public class EnemyController : MonoBehaviour
 
             enemyNum = Random.Range(3, 6);
             eir[i].cEnemyNum = enemyNum;
-        
+
             for (var j = 0; j < eir[i].cEnemyNum; j++)
             {
                 GameObject go = Instantiate(SwitchEnemy(), SwitchCreatePos(roomController.roomPoints[i]),
@@ -47,7 +47,7 @@ public class EnemyController : MonoBehaviour
                 go.transform.parent = roomController.rooms[i].transform;
                 go.GetComponent<EnemyBehaviorController>().roomindex = i;
                 eir[i].cEnemy.Add(go);
-                
+
             }
         }
 
@@ -97,24 +97,15 @@ public class EnemyController : MonoBehaviour
                     go.transform.parent = roomController.rooms[index].transform;
                     go.GetComponent<EnemyBehaviorController>().roomindex = index;
                     eir[index].cEnemy.Add(go);
-                }                    
+                }
                 break;
         }
 
     }
 
-    public bool CheckRoomEnemyIsZero(int index)
-    {
-        if (eir[index].cEnemy.Count == 0)
-            return true;
-
-        return false;
-    }
-
     public void ReMoveDeathEnemy(int index, GameObject go)
     {
         eir[index].cEnemy.Remove(go);
-        instance.eir[index].ArrayUpdata();
+        eir[index].ArrayUpdata();   
     }
 }
-

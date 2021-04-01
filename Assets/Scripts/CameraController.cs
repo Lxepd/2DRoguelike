@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour
 
     public float speed;
 
+    public bool isCheck;
+
     private void Awake()
     {
         instance = this;
@@ -23,10 +25,25 @@ public class CameraController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x,
                 target.position.y, target.position.z) + fristPoint, speed * Time.deltaTime);
 
-    }
+        GetPlayerNowRoomIndex(transform.position - fristPoint, isCheck);
+
+    }  
 
     public void UpdateCameraPos(Transform newPos)
     {
-        target = newPos;
+        isCheck = false;
+
+        target = newPos;      
+    }
+
+    void GetPlayerNowRoomIndex(Vector2 pos, bool tof)
+    {
+        if (!tof)
+            for (var i = 0; i < RoomController.instance.roomPoints.Count; i++)
+                if (RoomController.instance.roomPoints[i] == pos)
+                {
+                    Player.instance.playerIsRoomIndex = i;
+                    break;
+                }
     }
 }

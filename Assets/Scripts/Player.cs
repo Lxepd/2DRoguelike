@@ -30,7 +30,9 @@ public class Player : MonoBehaviour
     //血条
     public Slider hpSlider;
     //累积收到的伤害
-    public float hpSum; 
+    public float hpSum;
+    //
+    public int playerIsRoomIndex;
     /************************/
     public static Player instance;
 
@@ -56,7 +58,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-        Move();
+        SwitchAnima();
         HpBarUpdate();
     }
 
@@ -68,17 +70,17 @@ public class Player : MonoBehaviour
         if (keyPos.x != 0)
             transform.localScale = new Vector2(keyPos.x * 2f, transform.localScale.y);
 
-        SwitchAnima();
+        anima.SetFloat(name + "speed", keyPos.magnitude);
     }
 
     private void FixedUpdate()
     {
-        rg2d.MovePosition(rg2d.position + keyPos * playerData.cSpeed * Time.fixedDeltaTime);
+            rg2d.MovePosition(rg2d.position + keyPos * playerData.cSpeed * Time.fixedDeltaTime);
     }
 
     void SwitchAnima()
     {
-        anima.SetFloat(name + "speed", keyPos.magnitude);
+        Move();
 
         isAttack = false;
         Attack();

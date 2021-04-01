@@ -93,11 +93,13 @@ public class EnemyBehaviorController : MonoBehaviour
         damage = EnemyController.instance.enemyDatas[index].cDamage;
         objname = EnemyController.instance.enemyDatas[index].cEnemyPrefabs.name;
 
-        Debug.Log(objname);
     }
 
     private void Update()
     {
+        if (Player.instance.playerIsRoomIndex != roomindex)
+            return;
+
         if (isDeath && EnemyController.instance.enemyDatas[index].cBigEnemy)
         {
             if (isDivision == 1)
