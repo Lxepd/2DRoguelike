@@ -49,7 +49,26 @@ public class RoomController : MonoBehaviour
     
     public EnemyController enemyController;
 
+    bool nowInit = false;
+
     void Start()
+    {
+        InitRoom();
+        nowInit = true;
+    }
+    private void Update()
+    {
+        //if (Input.anyKeyDown)
+        //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    }
+    private void FixedUpdate()
+    {
+        if (nowInit && Player.instance.playerIsRoomIndex != -1)
+            IsCanGoNextRoom();
+    }
+
+    public void InitRoom()
     {
         roomPoints.Add(new Vector2(0, 0));
 
@@ -71,15 +90,10 @@ public class RoomController : MonoBehaviour
         instance = this;
     }
 
-    private void Update()
+    void RemoveRoom()
     {
-        //if (Input.anyKeyDown)
-        //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
-    }
-    private void FixedUpdate()
-    {
-        IsCanGoNextRoom();
+        //TOADD
+        //当玩家离开地牢时，移除所有东西
     }
 
     void CreateRoom()
@@ -177,6 +191,12 @@ public class RoomController : MonoBehaviour
                     go.GetComponent<Room>().doorDatas[j].GetComponent<BoxCollider2D>().enabled = false;
                 }
             }
+
+            Debug.Log(11123);
+            //TOADD
+            //掉落遗物或者道具
+
+
         }
         else if (!CheckEnemyIsNull())
         {

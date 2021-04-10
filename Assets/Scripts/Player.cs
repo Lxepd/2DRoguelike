@@ -27,10 +27,15 @@ public class Player : MonoBehaviour
     public bool isAttack;
     //检测是否被攻击
     public bool isHurt;
+    //血条上限
+    
     //血条
     public Slider hpSlider;
     //累积收到的伤害
-    public float hpSum;
+    [HideInInspector]
+    public float hpBuffer;
+    //血条文本
+    public Text hpText;
     //
     public int playerIsRoomIndex;
     /************************/
@@ -52,7 +57,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(hpSlider.value == 0)
+        if((int)hpSlider.value == 0)
         {
             anima.Play("PlayerDie");
             return;
@@ -119,8 +124,10 @@ public class Player : MonoBehaviour
         }
         float buckleBloodSpeed = Time.deltaTime * 5;
 
-        hpSlider.value -= hpSum * buckleBloodSpeed;
-        hpSum -= hpSum * buckleBloodSpeed;
+        hpSlider.value -= hpBuffer * buckleBloodSpeed;
+        hpBuffer -= hpBuffer * buckleBloodSpeed;
+
+        hpText.text = (int)hpSlider.value + " / " + hpSlider.maxValue;
     }
 }
 

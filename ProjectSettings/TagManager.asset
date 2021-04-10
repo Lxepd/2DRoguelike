@@ -9,6 +9,12 @@ TagManager:
   - Door
   - "\u53F2\u83B1\u59C6"
   - "\u8759\u8760"
+  - Delivery
+  - Camera
+  - EntranceRoom
+  - "\u5730\u7262\u5165\u53E3"
+  - "\u5730\u7262\u521D\u59CB\u5316\u70B9"
+  - "\u5730\u7262\u51FA\u53E3"
   layers:
   - Default
   - TransparentFX

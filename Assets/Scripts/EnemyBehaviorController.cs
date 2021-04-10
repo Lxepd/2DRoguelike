@@ -149,12 +149,13 @@ public class EnemyBehaviorController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
+
         if (!isCanMove)
         {
             t += Time.fixedDeltaTime;
             transform.position = Vector2.Lerp(transform.position, targetPos, t);
         }
-
     }
 
     void SwitchAnim()
@@ -281,7 +282,7 @@ public class EnemyBehaviorController : MonoBehaviour
         anima.SetTrigger(objname + "Attack");
 
         Player.instance.isHurt = true;
-        Player.instance.hpSum += damage;
+        Player.instance.hpBuffer += damage;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

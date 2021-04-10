@@ -8,11 +8,15 @@ public class CameraController : MonoBehaviour
 
     Transform target;
 
-    Vector3 fristPoint = new Vector3(0,1,-10);
+    Vector3 fristPoint = new Vector3(0, 0.5f, -10);
 
     public float speed;
 
     public bool isCheck;
+
+    public bool isEntrance = true;
+
+    public GameObject entrancePos;
 
     private void Awake()
     {
@@ -21,11 +25,16 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (target != null)
+        if (isEntrance == true)
+            EntranceView();
+
+        if (target != null && isEntrance == false)
+        {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x,
                 target.position.y, target.position.z) + fristPoint, speed * Time.deltaTime);
 
-        GetPlayerNowRoomIndex(transform.position - fristPoint, isCheck);
+            GetPlayerNowRoomIndex(transform.position - fristPoint, isCheck);
+        }
 
     }  
 
@@ -45,5 +54,18 @@ public class CameraController : MonoBehaviour
                     Player.instance.playerIsRoomIndex = i;
                     break;
                 }
+    }
+
+    public void EntranceView()
+    {
+        if (Player.instance.transform.position.x < 209 && Player.instance.transform.position.x >= 191)
+            transform.position = entrancePos.transform.position + fristPoint;
+        else if(Player.instance.transform.position.x >= 209)
+            transform.position = Player.instance.transform.position + fristPoint;
+    }
+
+    public void DungeonCameraInit()
+    {
+        transform.position = fristPoint;
     }
 }

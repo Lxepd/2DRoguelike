@@ -15,6 +15,8 @@ public class EnemyController : MonoBehaviour
 
     public EnemyInRoom[] eir;
 
+    bool nowInit = false;
+
     private void Awake()
     {
         instance = this;
@@ -22,10 +24,12 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         EnemyCreate();
+        nowInit = true;
     }
-    private void Update()
+    private void FixedUpdate()
     {
-        
+        if (nowInit && Player.instance.playerIsRoomIndex != -1)
+            ChangeSpriteLayer(Player.instance.playerIsRoomIndex);
     }
 
     void EnemyCreate()
@@ -52,25 +56,18 @@ public class EnemyController : MonoBehaviour
         }
 
     }
+    void RemoveEnemy()
+    {
+        //TOADD
+        //当玩家离开地牢时，移除所以东西
+    }
 
     Vector2 SwitchCreatePos(Vector2 roomPos)
     {
-        int ran = Random.Range(0, 3);
+        float randomX = Random.Range(-6, 6);
+        float randomY = Random.Range(2.5f, -2.5f);
 
-        switch (ran)
-        {
-            case 0:
-                //中间               
-                break;
-            case 1:
-                //左边
-                roomPos += new Vector2(-5, 2f);
-                break;
-            case 2:
-                //右边
-                roomPos += new Vector2(5f, 2f);
-                break;
-        }
+        roomPos = new Vector2(roomPos.x + randomX, roomPos.y + randomY);
 
         return roomPos;
     }
@@ -107,5 +104,41 @@ public class EnemyController : MonoBehaviour
     {
         eir[index].cEnemy.Remove(go);
         eir[index].ArrayUpdata();   
+    }
+    //当前房间怪物得图层渲染排序
+    public void ChangeSpriteLayer(int playernowroom)
+    {
+        if (eir[playernowroom].cEnemyNum == 0)
+            return;
+
+        int layerIndex = 0;
+
+        for (var i = 0; i < eir[playernowroom].cEnemyNum - 1; i++)
+        {
+            for (var j = 0; j < eir[playernowroom].cEnemyNum - 1 - i; j++)
+            {
+                if (eir[playernowroom].cEnemy[j].GetComponent<CapsuleCollider2D>().transform.position.y >=
+                    eir[playernowroom].cEnemy[j + 1].GetComponent<CapsuleCollider2D>().transform.position.y)
+                {
+                    GameObject go = eir[playernowroom].cEnemy[j + 1];
+                    eir[playernowroom].cEnemy[j + 1] = eir[playernowroom].cEnemy[j];
+                    eir[playernowroom].cEnemy[j] = go;
+                }
+            }
+        }
+
+        //TOADD
+        //增加随时改变玩家当期图层得Order
+
+       
+        //5 4 3
+        for (var i = 0; i < layerIndex; i++)
+            eir[playernowroom].cEnemy[i].GetComponent<SpriteRenderer>().sortingOrder = i;
+        //2
+        Player.instance.GetComponent<SpriteRenderer>().sortingOrder = layerIndex;
+        //1 0
+        for (var i = layerIndex; i < eir[playernowroom].cEnemyNum; i++)
+            eir[playernowroom].cEnemy[i].GetComponent<SpriteRenderer>().sortingOrder
+                = i + 1;
     }
 }
