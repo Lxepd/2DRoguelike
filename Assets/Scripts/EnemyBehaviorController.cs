@@ -48,6 +48,7 @@ public class EnemyBehaviorController : MonoBehaviour
     float t = 0;
     //上一次的行为
     Direction lastDirection;
+      
     //该行为的次数（用于怪物散步）
     int nextMoveNum;
     //当前移动次数记录
@@ -59,17 +60,22 @@ public class EnemyBehaviorController : MonoBehaviour
 
     public float attackTime;
     public float attackNextTime;
-    bool localScaleTurn;
 
     public LayerMask playerMask;
     public float attackRange;
     //判断是否允许攻击
-    public bool isCanAttack;
+
     //判断是否已经分裂
     public int isDivision;
 
     public static EnemyBehaviorController instance;
     string objname;
+
+    bool isCanAttack;
+    Collider2D col;
+
+    float abc;
+    int hurtPlayerNum;
 
     private void Awake()
     {
@@ -77,9 +83,8 @@ public class EnemyBehaviorController : MonoBehaviour
     }
     private void Start()
     {
-        speed = 0;
         isCanMove = true;
-        isCanAttack = false;
+
         anima = GetComponent<Animator>();
         nextMoveNum = 0;
         moveKeep = 0;
@@ -92,7 +97,6 @@ public class EnemyBehaviorController : MonoBehaviour
         hp = EnemyController.instance.enemyDatas[index].cHp;
         damage = EnemyController.instance.enemyDatas[index].cDamage;
         objname = EnemyController.instance.enemyDatas[index].cEnemyPrefabs.name;
-
     }
 
     private void Update()
@@ -100,6 +104,7 @@ public class EnemyBehaviorController : MonoBehaviour
         if (Player.instance.playerIsRoomIndex != roomindex)
             return;
 
+        ////////////////////////////////////////Die
         if (isDeath && EnemyController.instance.enemyDatas[index].cBigEnemy)
         {
             if (isDivision == 1)
@@ -121,150 +126,68 @@ public class EnemyBehaviorController : MonoBehaviour
             enabled = false;
             return;
         }
-
+        ////////////////////////////////////////Idle
+        ////默认动作就是idle
+        ////////////////////////////////////////Attack
         if (CheckIsAttack())
+            isCanAttack = true;
+
+        col = Physics2D.OverlapCircle(transform.position, attackRange, playerMask);
+
+        if (isCanAttack)
         {
+            if (!CheckIsAttack() && attackTime >= attackNextTime)
+            {
+                isCanAttack = false;
+                attackTime = 0;
+                return;
+            }
+
             if (attackTime >= attackNextTime)
             {
-                isCanAttack = true;
-                SwitchAnim();
+                anima.SetTrigger(objname + "Attack");
+                attackTime = 0;
+                if (anima.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+                    Invoke(nameof(ReMove), 0.5f);
             }
-            attackTime += Time.deltaTime;
-        }
-        else if (animaTime <= 0 && (isCanMove || !isCanMove))
-        {
-            SwitchAnim();
-            animaTime = animaNextTime;
-        }
-        else
-        {
-            animaTime -= Time.deltaTime;
-            attackTime = 0;
-            isCanAttack = false;
+            else if (attackTime < attackNextTime)
+                attackTime += Time.deltaTime;
         }
 
-        if (Vector2.Distance(transform.position, targetPos) == 0)
-            isCanMove = true;
+        if (hurtPlayerNum == 1)
+        {
+            Player.instance.anima.SetTrigger("PlayerHurt");
+            Player.instance.hpBuffer += damage;
+            hurtPlayerNum = 0;
+        }
+        ////////////////////////////////////////Move
+        float aaa = Vector3.Cross(Vector3.forward, (Player.instance.transform.position - transform.position).normalized).y;
+        if ((aaa > 0 && transform.localScale.x < 0) || (aaa < 0 && transform.localScale.x > 0))
+            transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
+
+        if (abc == 1)
+            speed = EnemyController.instance.enemyDatas[index].cSpeed;
+        else if (abc == 0)
+            speed = 0;
+
+        targetPos = Player.instance.gameObject.transform.position;
+        if (Vector2.Distance(transform.position, targetPos) < attackRange + 3.0f && !isCanAttack)
+        {
+            anima.SetTrigger(objname + "Move");
+
+            float aa = speed / Vector2.Distance(transform.position, targetPos) / 2;
+            transform.position = Vector2.Lerp(transform.position, targetPos, aa * Time.deltaTime);
+        }
     }
 
     private void FixedUpdate()
     {
-        
 
-        if (!isCanMove)
-        {
-            t += Time.fixedDeltaTime;
-            transform.position = Vector2.Lerp(transform.position, targetPos, t);
-        }
     }
 
-    void SwitchAnim()
+    void ReMove()
     {
-        if (nextMoveNum == 0 || moveKeep == nextMoveNum)
-            behaviour = (Behaviour)Random.Range(0, 2);
-        else if (Vector3.Distance(transform.position, targetPos) != 0)
-            behaviour = Behaviour.move;
-
-        if (isCanAttack)
-            behaviour = Behaviour.attack;
-
-        switch (behaviour)
-        {
-            case Behaviour.idle:
-                break;
-            case Behaviour.move:
-                MoveTimesDecide();
-                TargetDecide();
-                break;
-            case Behaviour.attack:
-                Attack();
-                attackTime = 0;
-                break;
-        }
-    }
-
-    public void MoveTimesDecide()
-    {
-        //连续移动
-        if (moveKeep == nextMoveNum)
-        {
-            nextMoveNum = Random.Range(1, 5);
-            moveKeep = 0;
-        }
-        //记录移动次数
-        moveKeep++;
-        //重复移动
-        if (moveKeep != 1)
-        {
-            isCanMove = false;
-            targetPos = transform.position;
-            targetPos += moreTimeMove;
-            anima.SetTrigger(objname + "Move");
-            t = Vector2.Distance(transform.position, targetPos) * Time.deltaTime / speed;
-
-            return;
-        }
-    }
-
-    void TargetDecide()
-    {
-        //决定移动方向
-        if (moveKeep == nextMoveNum)
-        {
-            while (direction == lastDirection)
-                direction = (Direction)Random.Range(0, 8);
-
-            if ((lastDirection == (Direction)2 || lastDirection == (Direction)4 || lastDirection == (Direction)6)
-                   && (direction == (Direction)3 || direction == (Direction)5 || direction == (Direction)7))
-                localScaleTurn = true;
-            else if ((lastDirection == (Direction)3 || lastDirection == (Direction)5 || lastDirection == (Direction)7)
-                  && (direction == (Direction)2 || direction == (Direction)4 || direction == (Direction)6))
-                localScaleTurn = true;
-            else
-                localScaleTurn = false;
-
-        }
-
-        lastDirection = direction;
-        //首次移动
-        isCanMove = false;
-        targetPos = transform.position;
-        anima.SetTrigger(objname + "Move");
-
-
-        switch (direction)
-        {
-            case Direction.Up:
-                moreTimeMove = new Vector3(0, speed * 2, 0);
-                break;
-            case Direction.Down:
-                moreTimeMove = new Vector3(0, -speed * 2, 0);
-                break;
-            case Direction.Left:
-                moreTimeMove = new Vector3(-speed * 2, 0, 0);
-                break;
-            case Direction.Right:
-                moreTimeMove = new Vector3(speed * 2, 0, 0);
-                break;
-            case Direction.UpAndLeft:
-                moreTimeMove = new Vector3(-speed * 2, speed * 2, 0);
-                break;
-            case Direction.UpAndRight:
-                moreTimeMove = new Vector3(speed * 2, speed * 2, 0);
-                break;
-            case Direction.DownAndLeft:
-                moreTimeMove = new Vector3(-speed * 2, -speed * 2, 0);
-                break;
-            case Direction.DownAndRight:
-                moreTimeMove = new Vector3(speed * 2, -speed * 2, 0);
-                break;
-        }
-
-        targetPos += moreTimeMove;
-        t = Vector2.Distance(transform.position, targetPos) * Time.deltaTime / speed;
-
-        if (localScaleTurn)
-            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+        isCanAttack = false;
     }
 
     bool CheckIsAttack()
@@ -272,39 +195,18 @@ public class EnemyBehaviorController : MonoBehaviour
         return Physics2D.OverlapCircle(transform.position, attackRange, playerMask);
     }
 
-    void Attack()
-    {
-        Collider2D col = Physics2D.OverlapCircle(transform.position, attackRange, playerMask);
-        //玩家在怪物左边
-        //if (col.transform.position.y - transform.position.y < 0)
-        //    transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
-
-        anima.SetTrigger(objname + "Attack");
-
-        Player.instance.isHurt = true;
-        Player.instance.hpBuffer += damage;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.transform.CompareTag("Wall"))
-            moreTimeMove *= -1;
-    }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
-
-    
-    //关键帧事件
-    void SetMoveSpeed(float setSpeed)
+    //动作关键帧事件
+    public void SetSpeed(int a)
     {
-        speed = setSpeed * 0.1f;
+        abc = a;
     }
-    void SetDivision(int div)
+    public void HurtPlayer(int a)
     {
-        isDivision = div;
+        hurtPlayerNum = a;
     }
 }

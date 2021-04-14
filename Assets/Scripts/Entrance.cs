@@ -24,7 +24,6 @@ public class Entrance : MonoBehaviour
                     {
                         InitGame();
 
-                        //Debug.Log("Init is OK, You can go");
                         break;
                     }
                 case "µÿ¿Œ»Îø⁄":
@@ -33,7 +32,6 @@ public class Entrance : MonoBehaviour
                         CameraController.instance.DungeonCameraInit();
                         CameraController.instance.isEntrance = false;
 
-                        //Debug.Log("Let's go");
                         break;
                     }
             }

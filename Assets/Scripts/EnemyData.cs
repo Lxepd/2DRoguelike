@@ -9,9 +9,11 @@ public class EnemyData
     public GameObject cEnemyPrefabs;
     public float cHp;
     public float cDamage;
+    public float cSpeed;
     public string cEnemyKind;
     public string cEnemyExplain;
     public bool cBigEnemy;
+
 }
 [System.Serializable]
 public class EnemyInRoom

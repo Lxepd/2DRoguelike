@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     //动画机
-    Animator anima;
+    [HideInInspector]
+    public Animator anima;
     //刚体
     Rigidbody2D rg2d;
     //移动的变量
@@ -118,7 +119,6 @@ public class Player : MonoBehaviour
     {
         if (isHurt)
         {
-            Debug.Log("啊，被打了.jpg  //By Player");
             anima.SetTrigger("PlayerHurt");
             isHurt = false;
         }

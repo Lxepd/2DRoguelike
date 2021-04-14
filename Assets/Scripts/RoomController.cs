@@ -192,7 +192,6 @@ public class RoomController : MonoBehaviour
                 }
             }
 
-            Debug.Log(11123);
             //TOADD
             //掉落遗物或者道具
 
