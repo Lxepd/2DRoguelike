@@ -74,7 +74,9 @@ public class RoomController : MonoBehaviour
 
         CreateRoom();
 
-        for (var i = 0; i < roomPoints.Count; i++)
+        int len = roomPoints.Count;
+
+        for (var i = 0; i < len; i++)
         {
             rooms.Add(Instantiate(roomprefab, roomPoints[i], Quaternion.identity));
             rooms[i].transform.parent = roomParent;
@@ -177,13 +179,16 @@ public class RoomController : MonoBehaviour
 
     public void IsCanGoNextRoom()
     {
+        int roomCount = rooms.Count;
+        int dootDatasCount = Room.instance.doorDatas.Count;
+
         if (CheckEnemyIsNull())
         {
-            for (var i = 0; i < rooms.Count; i++)
+            for (var i = 0; i < roomCount; i++)
             {
                 GameObject go = rooms[i];
 
-                for (var j = 0; j < Room.instance.doorDatas.Count; j++)
+                for (var j = 0; j < dootDatasCount; j++)
                 {
                     if (!go.GetComponent<Room>().doorDatas[j].activeSelf)
                         continue;
@@ -201,7 +206,7 @@ public class RoomController : MonoBehaviour
         {
             GameObject go = rooms[Player.instance.playerIsRoomIndex];
 
-            for (var i = 0; i < Room.instance.doorDatas.Count; i++)
+            for (var i = 0; i < dootDatasCount; i++)
             {
                 if (!go.GetComponent<Room>().doorDatas[i].activeSelf)
                     continue;

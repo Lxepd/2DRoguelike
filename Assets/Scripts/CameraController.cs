@@ -47,8 +47,10 @@ public class CameraController : MonoBehaviour
 
     void GetPlayerNowRoomIndex(Vector2 pos, bool tof)
     {
+        int len = RoomController.instance.roomPoints.Count;
+
         if (!tof)
-            for (var i = 0; i < RoomController.instance.roomPoints.Count; i++)
+            for (var i = 0; i < len; i++)
                 if (RoomController.instance.roomPoints[i] == pos)
                 {
                     Player.instance.playerIsRoomIndex = i;

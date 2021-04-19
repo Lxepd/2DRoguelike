@@ -8,8 +8,6 @@ public class AttackCollder : MonoBehaviour
 
     public List<GameObject> AttackGo = new List<GameObject>();
 
-    string enemyKind;
-
     private void Awake()
     {
         instance = this;
@@ -17,47 +15,30 @@ public class AttackCollder : MonoBehaviour
 
     private void Update()
     {
-        if (Player.instance.isAttack)
-            FindEnemyTag(AttackGo[0]);
+        if (Player.instance.isCanAttack)
+            PlayerAttack();
     }
 
-    void CheckeQuipment()
+    public void PlayerAttack()
     {
-
-    }
-
-    void DamageToHp(GameObject obj, int damage)
-    {
-        //Debug.Log("不要打我啊，好痛啊，呜呜呜/(ㄒoㄒ)/~~\nBy Enemy");
-        obj.GetComponent<EnemyBehaviorController>().hp -= damage;
-
-        if (obj.GetComponent<EnemyBehaviorController>().hp == 0)
+        int len = AttackGo.Count;
+        int temp;
+        for (var i = 0; i < len; i++)
         {
-            obj.GetComponent<EnemyBehaviorController>().isDeath = true;
-            AttackGo.Remove(obj);          
-        }
+            temp = i;
+            AttackGo[i].GetComponent<EnemyBehaviorController>().hp -= 1;
 
-    }
-
-    public void FindEnemyTag(GameObject obj)
-    {
-        for (var i = 0; i < EnemyController.instance.enemyDatas.Length; i++)
-            if (obj.CompareTag(EnemyController.instance.enemyDatas[i].cEnemyKind))
+            if (AttackGo[i].GetComponent<EnemyBehaviorController>().hp == 0)
             {
-                enemyKind = EnemyController.instance.enemyDatas[i].cEnemyKind;
-                break;
-            }
+                AttackGo[i].GetComponent<EnemyBehaviorController>().isDeath = true;
+                AttackGo.Remove(AttackGo[i]);
 
-        switch (enemyKind)
-        {
-            case "史莱姆":
-                DamageToHp(obj, 1);
-                break;
-            case "蝙蝠":
-                DamageToHp(obj, 1);
-                break;
+                i = temp - 1;
+                len -= 1;
+            }
         }
 
+        Player.instance.isCanAttack = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -69,4 +50,12 @@ public class AttackCollder : MonoBehaviour
     {
         AttackGo.Remove(collision.gameObject);
     }
+
+    public bool isInAttackList(GameObject go)
+    {
+        if (AttackGo.IndexOf(go) == 0 && AttackGo.Count > 0)
+            return true;
+
+        return false;
+    }    
 }

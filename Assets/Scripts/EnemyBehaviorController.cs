@@ -69,13 +69,15 @@ public class EnemyBehaviorController : MonoBehaviour
     public int isDivision;
 
     public static EnemyBehaviorController instance;
-    string objname;
+    public string objname;
 
     bool isCanAttack;
     Collider2D col;
 
     float abc;
     int hurtPlayerNum;
+
+    public int isCanHit;
 
     private void Awake()
     {
@@ -90,7 +92,8 @@ public class EnemyBehaviorController : MonoBehaviour
         moveKeep = 0;
         isDeath = false;
 
-        for (var i = 0; i < EnemyController.instance.enemyDatas.Length; i++)
+        int len = EnemyController.instance.enemyDatas.Length;
+        for (var i = 0; i < len; i++)
             if (name == EnemyController.instance.enemyDatas[i].cEnemyPrefabs.name + "(Clone)")
                 index = i;
 
@@ -178,6 +181,7 @@ public class EnemyBehaviorController : MonoBehaviour
             float aa = speed / Vector2.Distance(transform.position, targetPos) / 2;
             transform.position = Vector2.Lerp(transform.position, targetPos, aa * Time.deltaTime);
         }
+        ////////////////////////////////////////Hit
     }
 
     private void FixedUpdate()
@@ -205,8 +209,13 @@ public class EnemyBehaviorController : MonoBehaviour
     {
         abc = a;
     }
+    public void SetDivision(int a)
+    {
+        isDivision = 1;
+    }
     public void HurtPlayer(int a)
     {
         hurtPlayerNum = a;
     }
+ 
 }

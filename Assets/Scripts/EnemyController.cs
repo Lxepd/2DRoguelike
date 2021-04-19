@@ -35,8 +35,9 @@ public class EnemyController : MonoBehaviour
     void EnemyCreate()
     {
         eir[0].cEnemyNum = 0;
+        int len1 = roomController.roomPoints.Count;
 
-        for (var i = 1; i < roomController.roomPoints.Count; i++)
+        for (var i = 1; i < len1; i++)
         {
             if (i == RoomController.instance.endRoomIndex)
                 continue;

@@ -25,7 +25,9 @@ public class Room : MonoBehaviour
     {
         wallIndex = "";
 
-        for (var i = 0; i < doorDatas.Count; i++)
+        int len = doorDatas.Count;
+
+        for (var i = 0; i < len; i++)
             GetIndex(doorDatas[i].activeSelf);
 
         return Convert.ToInt32(wallIndex, 2) - 1;

@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -5614518052356705534, guid: ca01fd05a56d7414c91de39a81984bc0, type: 3}
-  m_Color: {r: 0.47843137, g: 0.7372549, b: 0.9150943, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -124,15 +124,17 @@ MonoBehaviour:
   animaNextTime: 0.7
   animaTime: 0
   isCanMove: 0
-  hp: 0
+  hp: 3
   damage: 0
   attackTime: 0
   attackNextTime: 1.4
   playerMask:
     serializedVersion: 2
     m_Bits: 128
-  attackRange: 1.2
+  attackRange: 0.85
   isDivision: 0
+  objname: 
+  isCanHit: 0
 --- !u!70 &4522394713000864225
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

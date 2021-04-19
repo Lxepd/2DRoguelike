@@ -36,16 +36,6 @@ public class Entrance : MonoBehaviour
                     }
             }
         }
-
-
-        //if(collision.CompareTag("Player"))
-        //{
-        //    Player.instance.transform.position = new Vector2(0, 0);
-        //    CameraController.instance.DungeonCameraInit();
-        //    CameraController.instance.aaa = true;
-
-        //    InitGame();
-        //}
     }
 
     void InitGame()

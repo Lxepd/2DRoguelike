@@ -92,6 +92,9 @@ TextureImporter:
   - first:
       213: 6499408205635926835
     second: Slime Sprite Sheet_30
+  - first:
+      213: 9078492290687252751
+    second: Slime Sprite Sheet_26
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -818,6 +821,27 @@ TextureImporter:
       bones: []
       spriteID: 33b3033e359823a50800000000000000
       internalID: 6499408205635926835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slime Sprite Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 143
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f09398273a84dfd70800000000000000
+      internalID: 9078492290687252751
       vertices: []
       indices: 
       edges: []

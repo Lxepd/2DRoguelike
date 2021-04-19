@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     //移动的变量
     Vector2 keyPos;
     //玩家属性
+    [HideInInspector]
     public PlayerData playerData;
     //装备属性
     public EquipmentData[] equipmentData;
@@ -25,6 +26,8 @@ public class Player : MonoBehaviour
     //伤害Mask
     public LayerMask hurtMask;
     //检测是否已经攻击
+    public bool isCanAttack;
+    //
     public bool isAttack;
     //检测是否被攻击
     public bool isHurt;
@@ -41,7 +44,6 @@ public class Player : MonoBehaviour
     public int playerIsRoomIndex;
     /************************/
     public static Player instance;
-
     private void Awake()
     {
         instance = this;
@@ -49,7 +51,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        playerData.cSpeed = 4;
+        playerData.cSpeed = 3;
         anima = GetComponent<Animator>();
         rg2d = GetComponent<Rigidbody2D>();
 
@@ -69,37 +71,40 @@ public class Player : MonoBehaviour
     }
 
     void Move()
-    {
+    { 
         keyPos.x = Input.GetAxisRaw("Horizontal");
         keyPos.y = Input.GetAxisRaw("Vertical");
+
 
         if (keyPos.x != 0)
             transform.localScale = new Vector2(keyPos.x * 2f, transform.localScale.y);
 
-        anima.SetFloat(name + "speed", keyPos.magnitude);
+        anima.SetFloat(name + "Speed", keyPos.magnitude);
+
     }
 
     private void FixedUpdate()
     {
-            rg2d.MovePosition(rg2d.position + keyPos * playerData.cSpeed * Time.fixedDeltaTime);
+        rg2d.MovePosition(rg2d.position + keyPos * playerData.cSpeed * Time.fixedDeltaTime);
     }
 
     void SwitchAnima()
     {
-        Move();
+        if (!isAttack)
+            Move();
 
-        isAttack = false;
         Attack();
     }
 
     void Attack()
     {
-        if (timeToAttack <= 0)
+        if (timeToAttack <= 0 && !isCanAttack)
         {
             if (Input.GetKeyDown(KeyCode.J))
             {
+                isAttack = true;
                 if (AttackCollder.instance.AttackGo.Count != 0)
-                    isAttack = true;
+                    isCanAttack = true;
 
                 anima.SetTrigger(name + "Attack");
                 timeToAttack = startTimeToAttack;
@@ -108,11 +113,6 @@ public class Player : MonoBehaviour
         else
             timeToAttack -= Time.deltaTime;
 
-    }
-
-    public void ChangeSpeed(float cspeed)
-    {
-        playerData.cSpeed = cspeed;
     }
 
     void HpBarUpdate()
@@ -129,12 +129,32 @@ public class Player : MonoBehaviour
 
         hpText.text = (int)hpSlider.value + " / " + hpSlider.maxValue;
     }
+
+    public void EnemyCanHit(int a)
+    {
+        if (AttackCollder.instance.AttackGo.Count != 0)
+            EnemyBehaviorController.instance.isCanHit = a;
+    }
+
+    public void AttackTimeOver()
+    {
+        isAttack = false;
+        ReSpeed();
+    }
+
+    public void AttackSpeed()
+    {
+        playerData.cSpeed = 0;
+    }
+    void ReSpeed()
+    {
+        playerData.cSpeed = 3;
+    }
 }
 
 [System.Serializable]
 public class PlayerData
 {
-    [HideInInspector]
     public float cSpeed;
 }
 [System.Serializable]
