@@ -7052,21 +7052,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyDatas:
   - cEnemyPrefabs: {fileID: 6825860519174281104, guid: 72a168beaff905046a47f9edecb6c8fd, type: 3}
-    cHp: 1
+    cHp: 2
     cDamage: 2
     cSpeed: 2.5
     cEnemyKind: "\u53F2\u83B1\u59C6"
     cEnemyExplain: "\u4E00\u79CD\u9ECF\u7CCA\u7CCA\u7684\u7403\u72B6\u9B54\u7269"
     cBigEnemy: 0
   - cEnemyPrefabs: {fileID: 8843845675067880010, guid: dbe84db61da5c1c43a469bb6c432d9f3, type: 3}
-    cHp: 4
+    cHp: 3
     cDamage: 5
     cSpeed: 2
     cEnemyKind: "\u53F2\u83B1\u59C6"
     cEnemyExplain: "\u4E00\u79CD\u9ECF\u7CCA\u7CCA\u7684\u7403\u72B6\u9B54\u7269"
     cBigEnemy: 1
   - cEnemyPrefabs: {fileID: 4837973979122758339, guid: 175d9a7af1ba58e418c9927ba048c9de, type: 3}
-    cHp: 3
+    cHp: 5
     cDamage: 7
     cSpeed: 3
     cEnemyKind: "\u8759\u8760"

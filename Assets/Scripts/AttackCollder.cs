@@ -23,14 +23,19 @@ public class AttackCollder : MonoBehaviour
     {
         int len = AttackGo.Count;
         int temp;
+        EnemyBehaviorController EnemyBehaCon;
         for (var i = 0; i < len; i++)
         {
+            EnemyBehaCon = AttackGo[i].GetComponent<EnemyBehaviorController>();
             temp = i;
-            AttackGo[i].GetComponent<EnemyBehaviorController>().hp -= 1;
+            EnemyBehaCon.hp -= 1;
 
-            if (AttackGo[i].GetComponent<EnemyBehaviorController>().hp == 0)
+            if (EnemyBehaCon.hp != 0)
+                EnemyBehaCon.isHit = true;
+
+            if (EnemyBehaCon.hp == 0)
             {
-                AttackGo[i].GetComponent<EnemyBehaviorController>().isDeath = true;
+                EnemyBehaCon.isDeath = true;
                 AttackGo.Remove(AttackGo[i]);
 
                 i = temp - 1;

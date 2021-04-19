@@ -77,7 +77,8 @@ public class EnemyBehaviorController : MonoBehaviour
     float abc;
     int hurtPlayerNum;
 
-    public int isCanHit;
+    public bool isHit;
+    public bool isCanPlayHitAnim;
 
     private void Awake()
     {
@@ -182,6 +183,15 @@ public class EnemyBehaviorController : MonoBehaviour
             transform.position = Vector2.Lerp(transform.position, targetPos, aa * Time.deltaTime);
         }
         ////////////////////////////////////////Hit
+        Debug.Log(isHit + "11111");
+        Debug.Log(isCanPlayHitAnim + "22222");
+        if (isHit && isCanPlayHitAnim)
+        {
+            Debug.Log("isHurt");
+            anima.Play(objname + "Hit");
+            isHit = false;
+            isCanPlayHitAnim = false;
+        }
     }
 
     private void FixedUpdate()

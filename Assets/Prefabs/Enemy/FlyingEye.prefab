@@ -124,7 +124,7 @@ MonoBehaviour:
   animaNextTime: 0.7
   animaTime: 0
   isCanMove: 0
-  hp: 4
+  hp: 0
   damage: 0
   attackTime: 0
   attackNextTime: 1.4
@@ -134,7 +134,8 @@ MonoBehaviour:
   attackRange: 1
   isDivision: 0
   objname: 
-  isCanHit: 0
+  isHit: 0
+  isCanPlayHitAnim: 0
 --- !u!50 &7056989097038115056
 Rigidbody2D:
   serializedVersion: 4

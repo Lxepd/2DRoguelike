@@ -66,6 +66,9 @@ public class Player : MonoBehaviour
             return;
         }
 
+        if (playerIsRoomIndex != -1)
+            SwitchIdle();
+
         SwitchAnima();
         HpBarUpdate();
     }
@@ -115,6 +118,14 @@ public class Player : MonoBehaviour
 
     }
 
+    void SwitchIdle()
+    {
+        if (EnemyController.instance.eir[playerIsRoomIndex].cEnemy.Count == 0)
+            anima.SetBool("HaveEnemy", false);
+        else
+            anima.SetBool("HaveEnemy", true);
+    }
+
     void HpBarUpdate()
     {
         if (isHurt)
@@ -130,18 +141,18 @@ public class Player : MonoBehaviour
         hpText.text = (int)hpSlider.value + " / " + hpSlider.maxValue;
     }
 
-    public void EnemyCanHit(int a)
-    {
-        if (AttackCollder.instance.AttackGo.Count != 0)
-            EnemyBehaviorController.instance.isCanHit = a;
-    }
 
+    //¹Ø¼üÖ¡ÊÂ¼þ
+    public void EnemyCanPlayHitAnima()
+    {
+        if (playerIsRoomIndex != -1)
+            EnemyBehaviorController.instance.isCanPlayHitAnim = true;
+    }
     public void AttackTimeOver()
     {
         isAttack = false;
         ReSpeed();
     }
-
     public void AttackSpeed()
     {
         playerData.cSpeed = 0;
