@@ -15,7 +15,7 @@ public class AttackCollder : MonoBehaviour
 
     private void Update()
     {
-        if (Player.instance.isCanAttack)
+        if (Player.instance.isAttack)
             PlayerAttack();
     }
 
@@ -30,8 +30,9 @@ public class AttackCollder : MonoBehaviour
             temp = i;
             EnemyBehaCon.hp -= 1;
 
-            if (EnemyBehaCon.hp != 0)
+            if (EnemyBehaCon.hp > 0)
                 EnemyBehaCon.isHit = true;
+
 
             if (EnemyBehaCon.hp == 0)
             {
@@ -43,7 +44,7 @@ public class AttackCollder : MonoBehaviour
             }
         }
 
-        Player.instance.isCanAttack = false;
+        Player.instance.isAttack = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -63,4 +64,5 @@ public class AttackCollder : MonoBehaviour
 
         return false;
     }    
+
 }

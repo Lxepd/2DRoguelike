@@ -10946,6 +10946,10 @@ PrefabInstance:
       propertyPath: attackPos
       value: 
       objectReference: {fileID: 500488569}
+    - target: {fileID: 365263455678693657, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
+      propertyPath: startTimeToAttack
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 365263455678693662, guid: f695b1b0381e03b419ab5fb46e3ad396, type: 3}
       propertyPath: m_RootOrder
       value: 10

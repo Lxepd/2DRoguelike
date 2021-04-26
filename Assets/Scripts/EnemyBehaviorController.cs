@@ -78,7 +78,6 @@ public class EnemyBehaviorController : MonoBehaviour
     int hurtPlayerNum;
 
     public bool isHit;
-    public bool isCanPlayHitAnim;
 
     private void Awake()
     {
@@ -175,7 +174,7 @@ public class EnemyBehaviorController : MonoBehaviour
             speed = 0;
 
         targetPos = Player.instance.gameObject.transform.position;
-        if (Vector2.Distance(transform.position, targetPos) < attackRange + 3.0f && !isCanAttack)
+        if (Vector2.Distance(transform.position, targetPos) < attackRange + 3.0f && !isCanAttack && !isHit)
         {
             anima.SetTrigger(objname + "Move");
 
@@ -183,20 +182,11 @@ public class EnemyBehaviorController : MonoBehaviour
             transform.position = Vector2.Lerp(transform.position, targetPos, aa * Time.deltaTime);
         }
         ////////////////////////////////////////Hit
-        Debug.Log(isHit + "11111");
-        Debug.Log(isCanPlayHitAnim + "22222");
-        if (isHit && isCanPlayHitAnim)
+        if (isHit && Player.instance.damageTime)
         {
-            Debug.Log("isHurt");
             anima.Play(objname + "Hit");
             isHit = false;
-            isCanPlayHitAnim = false;
         }
-    }
-
-    private void FixedUpdate()
-    {
-
     }
 
     void ReMove()

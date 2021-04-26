@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    //??
+    AnimatorStateInfo stateInfo;
     //动画机
     [HideInInspector]
     public Animator anima;
@@ -17,18 +19,21 @@ public class Player : MonoBehaviour
     public PlayerData playerData;
     //装备属性
     public EquipmentData[] equipmentData;
+    //lian ji
+    public int hitCount = 0;
+    //0: idle | 1: attack1 | 2: attack2 | 3: attack3
     //初始攻击时间
     public float startTimeToAttack;
-    //判断是否允许攻击的时间
-    public float timeToAttack;
     //攻击判定点
     public Transform attackPos;
     //伤害Mask
     public LayerMask hurtMask;
-    //检测是否已经攻击
-    public bool isCanAttack;
-    //
+    //检测是否允许跑动
+    public bool isAttackMove;
+    //检测是否攻击
     public bool isAttack;
+    //造成伤害的时刻
+    public bool damageTime;
     //检测是否被攻击
     public bool isHurt;
     //血条上限
@@ -51,7 +56,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        playerData.cSpeed = 3;
+        playerData.cSpeed = 4;
         anima = GetComponent<Animator>();
         rg2d = GetComponent<Rigidbody2D>();
 
@@ -60,17 +65,20 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        stateInfo = anima.GetCurrentAnimatorStateInfo(0);
+
         if((int)hpSlider.value == 0)
         {
             anima.Play("PlayerDie");
             return;
         }
 
-        if (playerIsRoomIndex != -1)
-            SwitchIdle();
+        
+        SwitchIdle();
 
         SwitchAnima();
         HpBarUpdate();
+
     }
 
     void Move()
@@ -93,34 +101,36 @@ public class Player : MonoBehaviour
 
     void SwitchAnima()
     {
-        if (!isAttack)
+        if (!isAttackMove)
             Move();
 
         Attack();
     }
 
     void Attack()
-    {
-        if (timeToAttack <= 0 && !isCanAttack)
+    {      
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            if (Input.GetKeyDown(KeyCode.J))
-            {
+            if (stateInfo.IsName("PlayerAttackIdle") || stateInfo.IsName("PlayerIdle") || stateInfo.IsName("PlayerRun"))
+                hitCount = 1;
+            else if (stateInfo.IsName("PlayerAttack1") && stateInfo.normalizedTime < 0.8f)
+                hitCount = 2;
+            else if (stateInfo.IsName("PlayerAttack2") && stateInfo.normalizedTime < 0.8f)
+                hitCount = 3;
+
+            isAttackMove = true;
+            if (AttackCollder.instance.AttackGo.Count != 0)
                 isAttack = true;
-                if (AttackCollder.instance.AttackGo.Count != 0)
-                    isCanAttack = true;
 
-                anima.SetTrigger(name + "Attack");
-                timeToAttack = startTimeToAttack;
-            }
+            anima.SetInteger("Attack", hitCount);
         }
-        else
-            timeToAttack -= Time.deltaTime;
-
     }
 
     void SwitchIdle()
     {
-        if (EnemyController.instance.eir[playerIsRoomIndex].cEnemy.Count == 0)
+        if (playerIsRoomIndex == -1)
+            anima.SetBool("HaveEnemy", false);
+        else if (EnemyController.instance.eir[playerIsRoomIndex].cEnemy.Count == 0)
             anima.SetBool("HaveEnemy", false);
         else
             anima.SetBool("HaveEnemy", true);
@@ -140,27 +150,37 @@ public class Player : MonoBehaviour
 
         hpText.text = (int)hpSlider.value + " / " + hpSlider.maxValue;
     }
+    ///////////////////////////////////////
 
+    ///////////////////////////////////////
 
-    //关键帧事件
-    public void EnemyCanPlayHitAnima()
+    void ReSpeed()
     {
-        if (playerIsRoomIndex != -1)
-            EnemyBehaviorController.instance.isCanPlayHitAnim = true;
+        playerData.cSpeed = 4;
     }
-    public void AttackTimeOver()
+    //关键帧事件
+    void EnemyCanPlayHitAnima()
     {
-        isAttack = false;
+        damageTime = true;
+    }
+    void rrrrrrrrrrr()
+    {
+        damageTime = false;
+    }
+    void ReAttack()
+    {
+        anima.SetInteger("Attack", hitCount);
+    }
+    void AttackTimeOver()
+    {
+        isAttackMove = false;
         ReSpeed();
     }
-    public void AttackSpeed()
+    void AttackSpeed()
     {
         playerData.cSpeed = 0;
     }
-    void ReSpeed()
-    {
-        playerData.cSpeed = 3;
-    }
+    
 }
 
 [System.Serializable]
