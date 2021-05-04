@@ -135,7 +135,6 @@ MonoBehaviour:
   isDivision: 0
   objname: 
   isHit: 0
-  isCanPlayHitAnim: 0
 --- !u!70 &4522394713000864225
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

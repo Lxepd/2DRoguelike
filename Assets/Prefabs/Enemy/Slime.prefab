@@ -116,7 +116,6 @@ MonoBehaviour:
   isDivision: 0
   objname: 
   isHit: 0
-  isCanPlayHitAnim: 0
 --- !u!95 &6825860519174281101
 Animator:
   serializedVersion: 3

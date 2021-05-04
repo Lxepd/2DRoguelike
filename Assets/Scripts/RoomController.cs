@@ -51,21 +51,34 @@ public class RoomController : MonoBehaviour
 
     bool nowInit = false;
 
+    bool RoomCheckTimes;
+    int pi = 0;
+
     void Start()
     {
         InitRoom();
         nowInit = true;
+        RoomCheckTimes = false;
     }
     private void Update()
     {
         //if (Input.anyKeyDown)
         //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
-    }
-    private void FixedUpdate()
-    {
-        if (nowInit && Player.instance.playerIsRoomIndex != -1)
+        if (Player.instance.playerIsRoomIndex != pi && Player.instance.playerIsRoomIndex != 0
+            && Player.instance.playerIsRoomIndex != 9 && Player.instance.playerIsRoomIndex != -1)
+        {
+            pi = Player.instance.playerIsRoomIndex;
+            Debug.Log(111);
+            RoomCheckTimes = false;
+        }
+
+        if (Player.instance.playerIsRoomIndex != -1 && RoomCheckTimes == false)
+        {
             IsCanGoNextRoom();
+            RoomCheckTimes = true;
+        }
+
     }
 
     public void InitRoom()
@@ -182,6 +195,8 @@ public class RoomController : MonoBehaviour
         int roomCount = rooms.Count;
         int dootDatasCount = Room.instance.doorDatas.Count;
 
+
+
         if (CheckEnemyIsNull())
         {
             for (var i = 0; i < roomCount; i++)
@@ -199,7 +214,7 @@ public class RoomController : MonoBehaviour
 
             //TOADD
             //掉落遗物或者道具
-
+            Item.instance.RoomIsNull();
 
         }
         else if (!CheckEnemyIsNull())
@@ -219,7 +234,7 @@ public class RoomController : MonoBehaviour
     public bool CheckEnemyIsNull()
     {
         if (enemyController.eir[Player.instance.playerIsRoomIndex].cEnemy.Count == 0)
-            return true;
+           return true;
 
         return false;
     }

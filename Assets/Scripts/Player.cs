@@ -49,6 +49,9 @@ public class Player : MonoBehaviour
     public int playerIsRoomIndex;
     /************************/
     public static Player instance;
+
+    bool attackToIdle;
+
     private void Awake()
     {
         instance = this;
@@ -65,7 +68,23 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (BagController.instance.bagPanel)
+        {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                BagController.instance.bagPanel = false;
+                BagController.instance.bagGo.SetActive(false);
+            }
+            return;
+        }
+
         stateInfo = anima.GetCurrentAnimatorStateInfo(0);
+        if ((stateInfo.IsName("PlayerAttack1") || stateInfo.IsName("PlayerAttack2") || stateInfo.IsName("PlayerAttack3")) &&
+            stateInfo.normalizedTime >= 0.85f)
+        {
+            hitCount = 0;
+            anima.SetInteger("Attack", hitCount);
+        }
 
         if((int)hpSlider.value == 0)
         {
@@ -76,7 +95,8 @@ public class Player : MonoBehaviour
         
         SwitchIdle();
 
-        SwitchAnima();
+        Move();
+        Attack();
         HpBarUpdate();
 
     }
@@ -93,29 +113,19 @@ public class Player : MonoBehaviour
         anima.SetFloat(name + "Speed", keyPos.magnitude);
 
     }
-
     private void FixedUpdate()
     {
         rg2d.MovePosition(rg2d.position + keyPos * playerData.cSpeed * Time.fixedDeltaTime);
     }
-
-    void SwitchAnima()
-    {
-        if (!isAttackMove)
-            Move();
-
-        Attack();
-    }
-
     void Attack()
     {      
         if (Input.GetKeyDown(KeyCode.J))
         {
             if (stateInfo.IsName("PlayerAttackIdle") || stateInfo.IsName("PlayerIdle") || stateInfo.IsName("PlayerRun"))
-                hitCount = 1;
-            else if (stateInfo.IsName("PlayerAttack1") && stateInfo.normalizedTime < 0.8f)
+                 hitCount = 1;
+            else if (stateInfo.IsName("PlayerAttack1") && stateInfo.normalizedTime < 0.85f)
                 hitCount = 2;
-            else if (stateInfo.IsName("PlayerAttack2") && stateInfo.normalizedTime < 0.8f)
+            else if (stateInfo.IsName("PlayerAttack2") && stateInfo.normalizedTime < 0.85f)
                 hitCount = 3;
 
             isAttackMove = true;
@@ -124,6 +134,7 @@ public class Player : MonoBehaviour
 
             anima.SetInteger("Attack", hitCount);
         }
+
     }
 
     void SwitchIdle()
@@ -134,6 +145,13 @@ public class Player : MonoBehaviour
             anima.SetBool("HaveEnemy", false);
         else
             anima.SetBool("HaveEnemy", true);
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            BagController.instance.bagPanel = true;
+            BagController.instance.bagGo.SetActive(true);
+        }
+
     }
 
     void HpBarUpdate()
@@ -167,10 +185,6 @@ public class Player : MonoBehaviour
     {
         damageTime = false;
     }
-    void ReAttack()
-    {
-        anima.SetInteger("Attack", hitCount);
-    }
     void AttackTimeOver()
     {
         isAttackMove = false;
@@ -180,7 +194,26 @@ public class Player : MonoBehaviour
     {
         playerData.cSpeed = 0;
     }
-    
+    ///////////////////////////////////////
+
+    public float range;
+
+    void CheckItem()
+    {
+
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, range);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("item"))
+            Debug.Log("You Pick it");
+    }
 }
 
 [System.Serializable]

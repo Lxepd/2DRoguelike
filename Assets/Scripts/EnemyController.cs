@@ -28,8 +28,7 @@ public class EnemyController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (nowInit && Player.instance.playerIsRoomIndex != -1)
-            ChangeSpriteLayer(Player.instance.playerIsRoomIndex);
+
     }
 
     void EnemyCreate()
@@ -105,41 +104,5 @@ public class EnemyController : MonoBehaviour
     {
         eir[index].cEnemy.Remove(go);
         eir[index].ArrayUpdata();   
-    }
-    //当前房间怪物得图层渲染排序
-    public void ChangeSpriteLayer(int playernowroom)
-    {
-        if (eir[playernowroom].cEnemyNum == 0)
-            return;
-
-        int layerIndex = 0;
-
-        for (var i = 0; i < eir[playernowroom].cEnemyNum - 1; i++)
-        {
-            for (var j = 0; j < eir[playernowroom].cEnemyNum - 1 - i; j++)
-            {
-                if (eir[playernowroom].cEnemy[j].GetComponent<CapsuleCollider2D>().transform.position.y >=
-                    eir[playernowroom].cEnemy[j + 1].GetComponent<CapsuleCollider2D>().transform.position.y)
-                {
-                    GameObject go = eir[playernowroom].cEnemy[j + 1];
-                    eir[playernowroom].cEnemy[j + 1] = eir[playernowroom].cEnemy[j];
-                    eir[playernowroom].cEnemy[j] = go;
-                }
-            }
-        }
-
-        //TOADD
-        //增加随时改变玩家当期图层得Order
-
-       
-        //5 4 3
-        for (var i = 0; i < layerIndex; i++)
-            eir[playernowroom].cEnemy[i].GetComponent<SpriteRenderer>().sortingOrder = i;
-        //2
-        Player.instance.GetComponent<SpriteRenderer>().sortingOrder = layerIndex;
-        //1 0
-        for (var i = layerIndex; i < eir[playernowroom].cEnemyNum; i++)
-            eir[playernowroom].cEnemy[i].GetComponent<SpriteRenderer>().sortingOrder
-                = i + 1;
     }
 }

@@ -106,6 +106,8 @@ public class EnemyBehaviorController : MonoBehaviour
     {
         if (Player.instance.playerIsRoomIndex != roomindex)
             return;
+        if (BagController.instance.bagPanel)
+            return;
 
         ////////////////////////////////////////Die
         if (isDeath && EnemyController.instance.enemyDatas[index].cBigEnemy)

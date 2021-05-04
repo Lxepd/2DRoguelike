@@ -58,8 +58,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.47981644, y: 0.16464609}
-  m_Size: {x: 0.39665985, y: 0.9889256}
+  m_Offset: {x: 0.49018097, y: 0.16464609}
+  m_Size: {x: 0.41738892, y: 0.9889256}
   m_Direction: 0
 --- !u!1 &365263455678693656
 GameObject:
@@ -75,9 +75,9 @@ GameObject:
   - component: {fileID: 365263455678693659}
   - component: {fileID: 365263455678693658}
   - component: {fileID: 365263455678693657}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,7 +91,7 @@ Transform:
   m_GameObject: {fileID: 365263455678693656}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 200, y: 0.284, z: 0}
-  m_LocalScale: {x: -2, y: 2, z: 1}
+  m_LocalScale: {x: -1.7, y: 1.7, z: 1}
   m_Children:
   - {fileID: 365263454389490073}
   m_Father: {fileID: 0}
@@ -180,9 +180,9 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.04374695, y: -0.26249945}
-  m_Size: {x: 0.24810791, y: 0.35842776}
-  m_Direction: 0
+  m_Offset: {x: 0.041813295, y: -0.32804555}
+  m_Size: {x: 0.39846817, y: 0.24039349}
+  m_Direction: 1
 --- !u!50 &365263455678693658
 Rigidbody2D:
   serializedVersion: 4
@@ -222,13 +222,15 @@ MonoBehaviour:
   equipmentData:
   - cEquipment: {fileID: 0}
     cAttackRange: 0.56
+  hitCount: 0
   startTimeToAttack: 0.3
-  timeToAttack: 0
-  attackPos: {fileID: 0}
+  attackPos: {fileID: 365263454389490073}
   hurtMask:
     serializedVersion: 2
     m_Bits: 256
+  isAttackMove: 0
   isAttack: 0
+  damageTime: 0
   isHurt: 0
   hpSlider: {fileID: 0}
   hpBuffer: 0

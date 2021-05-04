@@ -15,6 +15,7 @@ TagManager:
   - "\u5730\u7262\u5165\u53E3"
   - "\u5730\u7262\u521D\u59CB\u5316\u70B9"
   - "\u5730\u7262\u51FA\u53E3"
+  - item
   layers:
   - Default
   - TransparentFX
@@ -63,4 +64,7 @@ TagManager:
     locked: 0
   - name: ButtomDoor
     uniqueID: 3421112621
+    locked: 0
+  - name: item
+    uniqueID: 3981422431
     locked: 0
