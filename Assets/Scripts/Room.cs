@@ -11,9 +11,16 @@ public class Room : MonoBehaviour
 
     public static Room instance;
 
+    public bool yiwuCreate;
+
     private void Awake()
     {
         instance = this;
+    }
+
+    private void Start()
+    {
+        yiwuCreate = false;
     }
 
     private void Update()

@@ -49,38 +49,46 @@ public class RoomController : MonoBehaviour
     
     public EnemyController enemyController;
 
-    bool nowInit = false;
-
-    bool RoomCheckTimes;
-    int pi = 0;
-
     void Start()
     {
         InitRoom();
-        nowInit = true;
-        RoomCheckTimes = false;
+
     }
     private void Update()
-    {
-        //if (Input.anyKeyDown)
-        //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
-        if (Player.instance.playerIsRoomIndex != pi && Player.instance.playerIsRoomIndex != 0
-            && Player.instance.playerIsRoomIndex != 9 && Player.instance.playerIsRoomIndex != -1)
+    {   
+        if (Player.instance.playerIsRoomIndex >= 1 && Player.instance.playerIsRoomIndex <= rooms.Count - 1)
+            IsCanGoNextRoom(CheckEnemyIsNull());
+        else
         {
-            pi = Player.instance.playerIsRoomIndex;
-            Debug.Log(111);
-            RoomCheckTimes = false;
+            int roomCount = rooms.Count;
+            int dootDatasCount = Room.instance.doorDatas.Count;
+
+            for (var i = 0; i < roomCount; i++)
+            {
+                Room go = rooms[i].GetComponent<Room>();
+
+                for (var j = 0; j < dootDatasCount; j++)
+                {
+                    if (!go.doorDatas[j].activeSelf)
+                        continue;
+
+                    go.doorDatas[j].GetComponent<BoxCollider2D>().enabled = false;
+                }
+            }
         }
 
-        if (Player.instance.playerIsRoomIndex != -1 && RoomCheckTimes == false)
-        {
-            IsCanGoNextRoom();
-            RoomCheckTimes = true;
-        }
+        if(Player.instance.playerIsRoomIndex >= 1 && Player.instance.playerIsRoomIndex <= rooms.Count - 1)
+            if (!rooms[Player.instance.playerIsRoomIndex].GetComponent<Room>().yiwuCreate && CheckEnemyIsNull())
+            {
+                rooms[Player.instance.playerIsRoomIndex].GetComponent<Room>().yiwuCreate = true;
+                //Debug.Log("111111111111111111111111");
+                //掉落遗物或者道具
+                Item.instance.RoomIsNull();
+
+            }
 
     }
-
+    //房间初始化
     public void InitRoom()
     {
         roomPoints.Add(new Vector2(0, 0));
@@ -104,13 +112,13 @@ public class RoomController : MonoBehaviour
 
         instance = this;
     }
-
+    //移除房间
     void RemoveRoom()
     {
         //TOADD
         //当玩家离开地牢时，移除所有东西
     }
-
+    //生成房间
     void CreateRoom()
     {
         if (roomPoints.Count == roomsNum)
@@ -155,7 +163,7 @@ public class RoomController : MonoBehaviour
         }
 
     }
-    
+    //寻找距离远的房间
     void FindEndRoom()
     {
         rooms[0].GetComponent<SpriteRenderer>().color = startColor;
@@ -173,7 +181,7 @@ public class RoomController : MonoBehaviour
 
         endRoomVec.GetComponent<SpriteRenderer>().color = endColor;
     }
-
+    //生成每个房间的门
     void SetRoomDoors(Room rom, Vector2 rompos, int roomindex)
     {
         rom.doorDatas[0].SetActive(Physics2D.OverlapCircle(rompos + new Vector2(0, yOffset), 0.2f, roomLayer));
@@ -183,58 +191,53 @@ public class RoomController : MonoBehaviour
 
         CreateRoomWall(rom, rompos).transform.parent = rooms[roomindex].transform;
     }
-
+    //生成墙壁
+    //墙壁类别素材可以随时替换
     GameObject CreateRoomWall(Room rom,Vector2 rompos)
     {
         //                                         ↓这是墙的类别↓
         return Instantiate(wall[rom.GetWallIndex()].wallFrefab[0], rompos, Quaternion.identity);
     }
-
-    public void IsCanGoNextRoom()
+    //是否允许进入下一个房间
+    public void IsCanGoNextRoom(bool isnull)
     {
         int roomCount = rooms.Count;
         int dootDatasCount = Room.instance.doorDatas.Count;
 
-
-
-        if (CheckEnemyIsNull())
+        if (isnull)
         {
             for (var i = 0; i < roomCount; i++)
             {
-                GameObject go = rooms[i];
+                Room go = rooms[i].GetComponent<Room>();
 
                 for (var j = 0; j < dootDatasCount; j++)
                 {
-                    if (!go.GetComponent<Room>().doorDatas[j].activeSelf)
+                    if (!go.doorDatas[j].activeSelf)
                         continue;
 
-                    go.GetComponent<Room>().doorDatas[j].GetComponent<BoxCollider2D>().enabled = false;
+                    go.doorDatas[j].GetComponent<BoxCollider2D>().enabled = false;
                 }
             }
 
-            //TOADD
-            //掉落遗物或者道具
-            Item.instance.RoomIsNull();
-
         }
-        else if (!CheckEnemyIsNull())
+        else if (!isnull)
         {
-            GameObject go = rooms[Player.instance.playerIsRoomIndex];
+            Room go = rooms[Player.instance.playerIsRoomIndex].GetComponent<Room>();
 
             for (var i = 0; i < dootDatasCount; i++)
             {
-                if (!go.GetComponent<Room>().doorDatas[i].activeSelf)
+                if (!go.doorDatas[i].activeSelf)
                     continue;
 
-                go.GetComponent<Room>().doorDatas[i].GetComponent<BoxCollider2D>().enabled = true; ;
+                go.doorDatas[i].GetComponent<BoxCollider2D>().enabled = true;
             }
         }
     }
-
+    //判断怪物房间怪物是否为空
     public bool CheckEnemyIsNull()
     {
         if (enemyController.eir[Player.instance.playerIsRoomIndex].cEnemy.Count == 0)
-           return true;
+            return true;
 
         return false;
     }
