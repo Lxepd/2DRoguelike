@@ -23,13 +23,13 @@ AnimationClip:
       value: {fileID: -9013844846209147344, guid: 93e4a19df3ad1dc418525c63bb962b63, type: 3}
     - time: 0.083333336
       value: {fileID: -8615837943046799719, guid: 93e4a19df3ad1dc418525c63bb962b63, type: 3}
-    - time: 0.25
+    - time: 0.16666667
       value: {fileID: -5253927435303738400, guid: 93e4a19df3ad1dc418525c63bb962b63, type: 3}
-    - time: 0.41666666
+    - time: 0.25
       value: {fileID: -539368960687019306, guid: 93e4a19df3ad1dc418525c63bb962b63, type: 3}
-    - time: 0.5
+    - time: 0.33333334
       value: {fileID: -7032205920181708771, guid: 93e4a19df3ad1dc418525c63bb962b63, type: 3}
-    - time: 0.5833333
+    - time: 0.41666666
       value: {fileID: -3173507598410241640, guid: 93e4a19df3ad1dc418525c63bb962b63, type: 3}
     attribute: m_Sprite
     path: 
@@ -61,7 +61,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666666
+    m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -88,21 +88,28 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.16666667
+  - time: 0.083333336
     functionName: EnemyCanPlayHitAnima
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.25
+  - time: 0.16666667
     functionName: rrrrrrrrrrr
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5833333
+  - time: 0.25
+    functionName: GoToNextAttackAction
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.41666666
     functionName: AttackTimeOver
     data: 
     objectReferenceParameter: {fileID: 0}

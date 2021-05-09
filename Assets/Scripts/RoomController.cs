@@ -55,9 +55,20 @@ public class RoomController : MonoBehaviour
 
     }
     private void Update()
-    {   
+    {
         if (Player.instance.playerIsRoomIndex >= 1 && Player.instance.playerIsRoomIndex <= rooms.Count - 1)
+        {
             IsCanGoNextRoom(CheckEnemyIsNull());
+
+            if (!rooms[Player.instance.playerIsRoomIndex].GetComponent<Room>().yiwuCreate && CheckEnemyIsNull())
+            {
+                rooms[Player.instance.playerIsRoomIndex].GetComponent<Room>().yiwuCreate = true;
+                //Debug.Log("111111111111111111111111");
+                //掉落遗物或者道具
+                Item.instance.RoomIsNull();
+
+            }
+        }
         else
         {
             int roomCount = rooms.Count;
@@ -76,16 +87,6 @@ public class RoomController : MonoBehaviour
                 }
             }
         }
-
-        if(Player.instance.playerIsRoomIndex >= 1 && Player.instance.playerIsRoomIndex <= rooms.Count - 1)
-            if (!rooms[Player.instance.playerIsRoomIndex].GetComponent<Room>().yiwuCreate && CheckEnemyIsNull())
-            {
-                rooms[Player.instance.playerIsRoomIndex].GetComponent<Room>().yiwuCreate = true;
-                //Debug.Log("111111111111111111111111");
-                //掉落遗物或者道具
-                Item.instance.RoomIsNull();
-
-            }
 
     }
     //房间初始化

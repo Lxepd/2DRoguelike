@@ -50,8 +50,6 @@ public class Player : MonoBehaviour
     /************************/
     public static Player instance;
 
-    bool attackToIdle;
-
     private void Awake()
     {
         instance = this;
@@ -98,7 +96,7 @@ public class Player : MonoBehaviour
         Move();
         Attack();
         HpBarUpdate();
-
+        CheckItem();
     }
 
     void Move()
@@ -118,11 +116,14 @@ public class Player : MonoBehaviour
         rg2d.MovePosition(rg2d.position + keyPos * playerData.cSpeed * Time.fixedDeltaTime);
     }
     void Attack()
-    {      
+    {
         if (Input.GetKeyDown(KeyCode.J))
         {
             if (stateInfo.IsName("PlayerAttackIdle") || stateInfo.IsName("PlayerIdle") || stateInfo.IsName("PlayerRun"))
-                 hitCount = 1;
+            {
+                hitCount = 1;
+                anima.SetInteger("Attack", hitCount);
+            }
             else if (stateInfo.IsName("PlayerAttack1") && stateInfo.normalizedTime < 0.85f)
                 hitCount = 2;
             else if (stateInfo.IsName("PlayerAttack2") && stateInfo.normalizedTime < 0.85f)
@@ -131,8 +132,6 @@ public class Player : MonoBehaviour
             isAttackMove = true;
             if (AttackCollder.instance.AttackGo.Count != 0)
                 isAttack = true;
-
-            anima.SetInteger("Attack", hitCount);
         }
 
     }
@@ -170,6 +169,11 @@ public class Player : MonoBehaviour
     }
     ///////////////////////////////////////
 
+    void GoToNextAttackAction()
+    {
+        anima.SetInteger("Attack", hitCount);
+    }
+
     ///////////////////////////////////////
 
     void ReSpeed()
@@ -196,24 +200,29 @@ public class Player : MonoBehaviour
     }
     ///////////////////////////////////////
 
-    public float range;
+    public float itemCheckRange;
 
     void CheckItem()
     {
+        Collider2D[] coll = Physics2D.OverlapCircleAll(transform.position, itemCheckRange);
 
+        foreach (Collider2D go in coll)
+        {
+            if (go.CompareTag("item") && Input.GetKeyDown(KeyCode.E))
+            {
+                Debug.Log("You Pick it");
+                BagController.instance.ItemGoBag(go.gameObject);
+                Destroy(go.gameObject);
+            }
+        }
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, range);
+        Gizmos.DrawWireSphere(transform.position, itemCheckRange);
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("item"))
-            Debug.Log("You Pick it");
-    }
 }
 
 [System.Serializable]

@@ -39,7 +39,8 @@ public class Item : MonoBehaviour
 
         GameObject go = Instantiate(BagController.instance.itemGo);
         go.GetComponent<SpriteRenderer>().sprite = itemList[ran].itemSprite;
-        go.transform.position = new Vector2(playerRoomPos.x, playerRoomPos.y);
+        //遗物生成的位置
+        go.transform.position = new Vector2(playerRoomPos.x + Random.Range(-7.5f, 7.5f), playerRoomPos.y + Random.Range(-2.5f, 3.5f));
 
         itemList.Remove(itemList[ran]);
     }

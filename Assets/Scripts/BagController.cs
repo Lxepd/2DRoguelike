@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BagController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class BagController : MonoBehaviour
     }
 
     public List<GameObject> box = new List<GameObject>();
+    int itemInBoxIndex;
     int boxIndex;
 
     public GameObject bagPrefab;
@@ -24,9 +26,11 @@ public class BagController : MonoBehaviour
     public GameObject bagGo;
 
     public GameObject itemGo;
+    public GameObject bagItemGo;
 
     private void Start()
     {
+        itemInBoxIndex = 0;
         boxIndex = 0;
         for (var i = 0; i < 20; i++)
         {
@@ -73,6 +77,23 @@ public class BagController : MonoBehaviour
         bagSelect.transform.parent = box[boxIndex].transform;
         bagSelect.transform.position = box[boxIndex].transform.position;
 
+    }
+
+    public void ItemGoBag(GameObject itemgo)
+    {
+        if (itemInBoxIndex == box.Count - 1)
+            return;
+
+        //创建背包道具预制体
+        GameObject go = Instantiate(bagItemGo);
+        //将图片赋予预制体
+        go.GetComponent<Image>().sprite = itemgo.GetComponent<SpriteRenderer>().sprite;
+        //按顺序设置父物体
+        go.transform.parent = box[itemInBoxIndex].transform;
+        //移到合适位置
+        go.transform.position = box[itemInBoxIndex++].transform.position;
+        //调整合适的大小
+        go.transform.localScale = new Vector2(.7f, .7f);
     }
 }
 
