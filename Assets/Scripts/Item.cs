@@ -14,11 +14,14 @@ public class Item : MonoBehaviour
 
     public List<Bag> itemAllList = new List<Bag>();
     public List<Bag> itemList = new List<Bag>();
+    int itemAllNum;
+
+    int itemRan;
 
     private void Start()
     {
         itemAllList = XmlManager.instance.LoadXML();
-
+        itemAllNum = itemAllList.Count;
         int num = 8;
         for (var i = 0; i < num; i++)
         {
@@ -34,14 +37,25 @@ public class Item : MonoBehaviour
 
     public void RoomIsNull()
     {
-        int ran = Random.Range(0, itemList.Count - 1);
+        itemRan = Random.Range(0, itemList.Count - 1);
         Vector2 playerRoomPos = RoomController.instance.roomPoints[Player.instance.playerIsRoomIndex];
 
         GameObject go = Instantiate(BagController.instance.itemGo);
-        go.GetComponent<SpriteRenderer>().sprite = itemList[ran].itemSprite;
+        go.GetComponent<SpriteRenderer>().sprite = itemList[itemRan].itemSprite;
         //遗物生成的位置
         go.transform.position = new Vector2(playerRoomPos.x + Random.Range(-7.5f, 7.5f), playerRoomPos.y + Random.Range(-2.5f, 3.5f));
 
-        itemList.Remove(itemList[ran]);
+        
+    }
+
+    public int ReturnItemIndex() { return itemRan; }
+
+    public string ReturnItemText(Bag go)
+    {
+        for (var i = 0; i < itemAllNum; i++)
+            if (go.itemId == itemAllList[i].itemId)
+                return itemAllList[i].itemText;
+
+        return "";
     }
 }

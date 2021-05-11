@@ -12,13 +12,14 @@ public class BagController : MonoBehaviour
         instance = this;
     }
 
-    public List<GameObject> box = new List<GameObject>();
-    int itemInBoxIndex;
-    int boxIndex;
+    public List<GameObject> bag = new List<GameObject>();
+    int itemInBagIndex;
+    int bagSelectIndex;
+    public List<Bag> itemMsgInBag = new List<Bag>();
 
     public GameObject bagPrefab;
     public GameObject bagGround;
-    public GameObject bagSelect;
+    public GameObject bagSelectGo;
 
     [HideInInspector]
     public bool bagPanel;
@@ -27,21 +28,22 @@ public class BagController : MonoBehaviour
 
     public GameObject itemGo;
     public GameObject bagItemGo;
+    public Text itemTextInBag;
 
     private void Start()
     {
-        itemInBoxIndex = 0;
-        boxIndex = 0;
-        for (var i = 0; i < 20; i++)
+        itemInBagIndex = 0;
+        bagSelectIndex = 0;
+        for (var i = 0; i < 24; i++)
         {
             GameObject go = Instantiate(bagPrefab);        
             go.transform.parent = bagGround.transform;
             go.transform.localScale = new Vector3(1, 1, 1);
-            box.Add(go);
+            bag.Add(go);
         }
 
-        bagSelect.transform.parent = box[0].transform;
-        bagSelect.transform.position = box[0].transform.position;
+        bagSelectGo.transform.parent = bag[0].transform;
+        bagSelectGo.transform.position = bag[0].transform.position;
 
         //for(var i = 0;i<bagList.Count;i++)
         //{
@@ -63,38 +65,56 @@ public class BagController : MonoBehaviour
 
     void BagMsgUpdate()
     {
-        int boxNum = box.Count;
+        int boxNum = bag.Count;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) && boxIndex > 0)
-            boxIndex--;
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) && boxIndex < boxNum - 1)
-            boxIndex++;
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) && boxIndex > 3)
-            boxIndex -= 4;
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) && boxIndex < 17)
-            boxIndex += 4;
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) && bagSelectIndex > 0)
+            bagSelectIndex--;
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) && bagSelectIndex < boxNum - 1)
+            bagSelectIndex++;
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) && bagSelectIndex > 6)
+            bagSelectIndex -= 6;
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) && bagSelectIndex < 17)
+            bagSelectIndex += 6;
 
-        bagSelect.transform.parent = box[boxIndex].transform;
-        bagSelect.transform.position = box[boxIndex].transform.position;
-
+        bagSelectGo.transform.parent = bag[bagSelectIndex].transform;
+        bagSelectGo.transform.position = bag[bagSelectIndex].transform.position;
+        //更改背包中选中该道具的文本
+        ChangeItemTextOfBag();
     }
 
     public void ItemGoBag(GameObject itemgo)
     {
-        if (itemInBoxIndex == box.Count - 1)
+        if (itemInBagIndex == bag.Count - 1)
             return;
-
         //创建背包道具预制体
         GameObject go = Instantiate(bagItemGo);
         //将图片赋予预制体
         go.GetComponent<Image>().sprite = itemgo.GetComponent<SpriteRenderer>().sprite;
         //按顺序设置父物体
-        go.transform.parent = box[itemInBoxIndex].transform;
+        go.transform.parent = bag[itemInBagIndex].transform;
         //移到合适位置
-        go.transform.position = box[itemInBoxIndex++].transform.position;
+        go.transform.position = bag[itemInBagIndex++].transform.position;
         //调整合适的大小
         go.transform.localScale = new Vector2(.7f, .7f);
     }
+
+    void ChangeItemTextOfBag()
+    {
+        if (bagSelectIndex > itemMsgInBag.Count - 1)
+        {
+            itemTextInBag.text = "";
+            return;
+        }
+
+        itemTextInBag.text = Item.instance.ReturnItemText(itemMsgInBag[bagSelectIndex]);
+    }
+
+    public void AddItemMsgInList(int index)
+    {
+        itemMsgInBag.Add(Item.instance.itemList[index]);
+        Item.instance.itemList.Remove(Item.instance.itemList[index]);
+    }
+
 }
 
 public class Bag

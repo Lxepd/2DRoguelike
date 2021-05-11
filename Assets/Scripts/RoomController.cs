@@ -104,10 +104,12 @@ public class RoomController : MonoBehaviour
             rooms[i].transform.parent = roomParent;
         }
 
-        FindEndRoom();
+        FindEndRoom();    
 
         foreach (GameObject go in rooms)
             SetRoomDoors(go.GetComponent<Room>(), go.transform.position, roomToWall++);
+
+        CreateShopRoom();
 
         enemyController.enabled = true;
 
@@ -199,6 +201,18 @@ public class RoomController : MonoBehaviour
         //                                         ↓这是墙的类别↓
         return Instantiate(wall[rom.GetWallIndex()].wallFrefab[0], rompos, Quaternion.identity);
     }
+    //创建商店房间
+    void CreateShopRoom()
+    {
+        int shopRan = Random.Range(1, 101);
+        Debug.Log(shopRan);
+
+        if (shopRan < 30)
+            rooms[Random.Range(0, rooms.Count - 1)].GetComponent<Room>().isShop = true;
+
+        //创建商人及物品
+    }
+
     //是否允许进入下一个房间
     public void IsCanGoNextRoom(bool isnull)
     {

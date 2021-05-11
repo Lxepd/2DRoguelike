@@ -204,7 +204,7 @@ TextureImporter:
         width: 12
         height: 12
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -212,6 +212,27 @@ TextureImporter:
       bones: []
       spriteID: c8674e6f2e58d9b40800000000000000
       internalID: 5448658334039438988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerBag_4
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 6
+        width: 30
+        height: 3
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee4a48264e8c30b40800000000000000
+      internalID: 5405384861005685998
       vertices: []
       indices: 
       edges: []

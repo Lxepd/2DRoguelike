@@ -12,6 +12,7 @@ public class Room : MonoBehaviour
     public static Room instance;
 
     public bool yiwuCreate;
+    public bool isShop;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class Room : MonoBehaviour
     private void Start()
     {
         yiwuCreate = false;
+        
     }
 
     private void Update()

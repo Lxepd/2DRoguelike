@@ -40,6 +40,8 @@ public class EnemyController : MonoBehaviour
         {
             if (i == RoomController.instance.endRoomIndex)
                 continue;
+            if (RoomController.instance.rooms[i].GetComponent<Room>().isShop)
+                continue;
 
             enemyNum = Random.Range(3, 6);
             eir[i].cEnemyNum = enemyNum;

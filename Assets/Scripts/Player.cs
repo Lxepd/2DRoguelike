@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
         Move();
         Attack();
         HpBarUpdate();
-        CheckItem();
+        CheckAndPickItem();
     }
 
     void Move()
@@ -202,7 +202,7 @@ public class Player : MonoBehaviour
 
     public float itemCheckRange;
 
-    void CheckItem()
+    void CheckAndPickItem()
     {
         Collider2D[] coll = Physics2D.OverlapCircleAll(transform.position, itemCheckRange);
 
@@ -212,6 +212,7 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("You Pick it");
                 BagController.instance.ItemGoBag(go.gameObject);
+                BagController.instance.AddItemMsgInList(Item.instance.ReturnItemIndex());
                 Destroy(go.gameObject);
             }
         }
