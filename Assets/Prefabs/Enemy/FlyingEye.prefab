@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7609170696299829016}
   m_Layer: 8
   m_Name: FlyingEye
-  m_TagString: "\u8759\u8760"
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,8 +118,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomindex: 0
-  direction: 0
-  behaviour: 0
   isDeath: 0
   animaNextTime: 0.7
   animaTime: 0

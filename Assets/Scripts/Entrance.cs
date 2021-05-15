@@ -41,6 +41,6 @@ public class Entrance : MonoBehaviour
     void InitGame()
     {
         roomControllerGo.GetComponent<RoomController>().enabled = true;
-        enemyControllerGo.GetComponent<EnemyController>().enabled = false;
+        enemyControllerGo.GetComponent<EnemyController>().enabled = true;
     }
 }

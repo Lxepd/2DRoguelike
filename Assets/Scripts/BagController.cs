@@ -29,6 +29,8 @@ public class BagController : MonoBehaviour
     public GameObject itemGo;
     public GameObject bagItemGo;
     public Text itemTextInBag;
+    int moneyNum;
+    public Text moneyText;
 
     private void Start()
     {
@@ -110,11 +112,15 @@ public class BagController : MonoBehaviour
     }
 
     public void AddItemMsgInList(int index)
-    {
+    {   
         itemMsgInBag.Add(Item.instance.itemList[index]);
         Item.instance.itemList.Remove(Item.instance.itemList[index]);
     }
 
+    public void PickTheCoin()
+    {
+        moneyText.text = (++moneyNum).ToString();
+    }
 }
 
 public class Bag

@@ -6,31 +6,28 @@ public class EnemyController : MonoBehaviour
 {
     public static EnemyController instance;
 
-    public EnemyData[] enemyDatas;
     public RoomController roomController;
 
     public Transform roomEnemyParent;
 
-    int enemyNum;
-
     public EnemyInRoom[] eir;
 
-    bool nowInit = false;
+    public List<EnemyData> enemyAllList = new List<EnemyData>();
+    public List<GameObject> enemyPrefabs = new List<GameObject>();
 
     private void Awake()
     {
         instance = this;
+
     }
     private void Start()
     {
+        enemyAllList = XmlManager.instance.CopyEnemyList();
+        foreach (EnemyData ed in enemyAllList)
+            Debug.Log(ed.EnemyId);
+
         EnemyCreate();
-        nowInit = true;
     }
-    private void FixedUpdate()
-    {
-
-    }
-
     void EnemyCreate()
     {
         eir[0].cEnemyNum = 0;
@@ -43,16 +40,19 @@ public class EnemyController : MonoBehaviour
             if (RoomController.instance.rooms[i].GetComponent<Room>().isShop)
                 continue;
 
-            enemyNum = Random.Range(3, 6);
-            eir[i].cEnemyNum = enemyNum;
+            eir[i].cEnemyNum = Random.Range(3, 6);
 
             for (var j = 0; j < eir[i].cEnemyNum; j++)
             {
-                GameObject go = Instantiate(SwitchEnemy(), SwitchCreatePos(roomController.roomPoints[i]),
+                int enemyid = Random.Range(0, enemyPrefabs.Count);
+
+                GameObject go = Instantiate(enemyPrefabs[enemyid].gameObject, SwitchCreatePos(roomController.roomPoints[i]),
                     Quaternion.identity);
                 go.transform.parent = roomController.rooms[i].transform;
                 go.GetComponent<EnemyBehaviorController>().roomindex = i;
-                eir[i].cEnemy.Add(go);
+                go.GetComponent<EnemyBehaviorController>().thisEnemy = enemyAllList[enemyid];
+
+                eir[i].cEnemyId.Add(enemyAllList[enemyid].EnemyId);
 
             }
         }
@@ -74,13 +74,6 @@ public class EnemyController : MonoBehaviour
         return roomPos;
     }
 
-    GameObject SwitchEnemy()
-    {
-        int enemyInAllEnemy = Random.Range(0, enemyDatas.Length);
-
-        return enemyDatas[enemyInAllEnemy].cEnemyPrefabs;
-    }
-
     public void SwitchEnemySkill(string tag, GameObject parent, int index)
     {
         GameObject go = null;
@@ -90,21 +83,22 @@ public class EnemyController : MonoBehaviour
             case "Ê·À³Ä·":
                 for (var i = 0; i < 2; i++)
                 {
-                    go = Instantiate(enemyDatas[0].cEnemyPrefabs,
+                    go = Instantiate(enemyPrefabs[0].gameObject,
                         new Vector3(parent.transform.position.x - 0.6f + i * 1.2f, parent.transform.position.y,
                         parent.transform.position.z), Quaternion.identity);
                     go.transform.parent = roomController.rooms[index].transform;
                     go.GetComponent<EnemyBehaviorController>().roomindex = index;
-                    eir[index].cEnemy.Add(go);
+
+                    eir[index].cEnemyId.Add(enemyAllList[0].EnemyId);
                 }
                 break;
         }
 
     }
 
-    public void ReMoveDeathEnemy(int index, GameObject go)
+    public void ReMoveDeathEnemy(int index, int id)
     {
-        eir[index].cEnemy.Remove(go);
+        eir[index].cEnemyId.Remove(enemyAllList[id].EnemyId);
         eir[index].ArrayUpdata();   
     }
 }

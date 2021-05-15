@@ -49,10 +49,14 @@ public class RoomController : MonoBehaviour
     
     public EnemyController enemyController;
 
+    //小地图
+    public GameObject mapPrefab;
+    public GameObject mapParent;
+
     void Start()
     {
         InitRoom();
-
+        CreateMap();
     }
     private void Update()
     {
@@ -65,7 +69,9 @@ public class RoomController : MonoBehaviour
                 rooms[Player.instance.playerIsRoomIndex].GetComponent<Room>().yiwuCreate = true;
                 //Debug.Log("111111111111111111111111");
                 //掉落遗物或者道具
-                Item.instance.RoomIsNull();
+
+                int ywGl = Random.Range(1, 101);
+                Item.instance.RoomIsNull(ywGl);
 
             }
         }
@@ -205,7 +211,6 @@ public class RoomController : MonoBehaviour
     void CreateShopRoom()
     {
         int shopRan = Random.Range(1, 101);
-        Debug.Log(shopRan);
 
         if (shopRan < 30)
             rooms[Random.Range(0, rooms.Count - 1)].GetComponent<Room>().isShop = true;
@@ -251,9 +256,23 @@ public class RoomController : MonoBehaviour
     //判断怪物房间怪物是否为空
     public bool CheckEnemyIsNull()
     {
-        if (enemyController.eir[Player.instance.playerIsRoomIndex].cEnemy.Count == 0)
+        if (enemyController.eir[Player.instance.playerIsRoomIndex].cEnemyId.Count == 0)
             return true;
 
         return false;
+    }
+    //
+    public void CreateMap()
+    {
+        foreach(Vector2 pos in roomPoints)
+        {
+            int gox = (int)pos.x / 16;
+            int goy = (int)pos.y / 11;
+
+            GameObject go = Instantiate(mapPrefab);
+            go.transform.parent = mapParent.transform;
+            go.transform.position = new Vector2(gox * 16, goy * 11);
+        }
+
     }
 }

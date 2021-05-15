@@ -25,11 +25,6 @@ public class Room : MonoBehaviour
         
     }
 
-    private void Update()
-    {
-
-    }
-
     public int GetWallIndex()
     {
         wallIndex = "";

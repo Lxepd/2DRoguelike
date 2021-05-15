@@ -6,28 +6,6 @@ public class EnemyBehaviorController : MonoBehaviour
 {
     public int roomindex;
 
-    public enum Direction
-    {
-        Up,
-        Down,
-        Left,
-        Right,
-        UpAndLeft,
-        UpAndRight,
-        DownAndLeft,
-        DownAndRight
-    }
-    public Direction direction;
-
-    public enum Behaviour
-    {
-        idle,
-        move,
-        attack,
-        die
-    }
-    public Behaviour behaviour;
-
     public bool isDeath;
 
     //行为间隔
@@ -40,14 +18,14 @@ public class EnemyBehaviorController : MonoBehaviour
     public bool isCanMove;
     //动画组件
     Animator anima;
+    //
+    AnimatorStateInfo info;
     //目标位置
     Vector3 targetPos;
     //位置偏移量
     Vector3 moreTimeMove;
     //每段移动的百分比
     float t = 0;
-    //上一次的行为
-    Direction lastDirection;
       
     //该行为的次数（用于怪物散步）
     int nextMoveNum;
@@ -79,6 +57,8 @@ public class EnemyBehaviorController : MonoBehaviour
 
     public bool isHit;
 
+    public EnemyData thisEnemy;
+
     private void Awake()
     {
         instance = this;
@@ -86,20 +66,10 @@ public class EnemyBehaviorController : MonoBehaviour
     private void Start()
     {
         isCanMove = true;
-
-        anima = GetComponent<Animator>();
-        nextMoveNum = 0;
-        moveKeep = 0;
         isDeath = false;
 
-        int len = EnemyController.instance.enemyDatas.Length;
-        for (var i = 0; i < len; i++)
-            if (name == EnemyController.instance.enemyDatas[i].cEnemyPrefabs.name + "(Clone)")
-                index = i;
+        anima = GetComponent<Animator>();
 
-        hp = EnemyController.instance.enemyDatas[index].cHp;
-        damage = EnemyController.instance.enemyDatas[index].cDamage;
-        objname = EnemyController.instance.enemyDatas[index].cEnemyPrefabs.name;
     }
 
     private void Update()
@@ -110,12 +80,12 @@ public class EnemyBehaviorController : MonoBehaviour
             return;
 
         ////////////////////////////////////////Die
-        if (isDeath && EnemyController.instance.enemyDatas[index].cBigEnemy)
+        if (isDeath && thisEnemy.isBigEnemy)
         {
             if (isDivision == 1)
             {
-                EnemyController.instance.SwitchEnemySkill(EnemyController.instance.enemyDatas[index].cEnemyKind, gameObject, roomindex);
-                EnemyController.instance.ReMoveDeathEnemy(roomindex, gameObject);
+                EnemyController.instance.SwitchEnemySkill(thisEnemy.EnemyKind, gameObject, roomindex);
+                EnemyController.instance.ReMoveDeathEnemy(roomindex, thisEnemy.EnemyId);
                 isDivision++;
                 Destroy(gameObject);
             }
@@ -124,10 +94,10 @@ public class EnemyBehaviorController : MonoBehaviour
 
             return;
         }
-        else if (isDeath && !EnemyController.instance.enemyDatas[index].cBigEnemy)
+        else if (isDeath && !thisEnemy.isBigEnemy)
         {
             anima.Play(objname + "Death");
-            EnemyController.instance.ReMoveDeathEnemy(roomindex, gameObject);
+            EnemyController.instance.ReMoveDeathEnemy(roomindex, thisEnemy.EnemyId);
             enabled = false;
             return;
         }
@@ -171,7 +141,7 @@ public class EnemyBehaviorController : MonoBehaviour
             transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
 
         if (abc == 1)
-            speed = EnemyController.instance.enemyDatas[index].cSpeed;
+            speed = thisEnemy.EnemySpeed;
         else if (abc == 0)
             speed = 0;
 
@@ -183,12 +153,25 @@ public class EnemyBehaviorController : MonoBehaviour
             float aa = speed / Vector2.Distance(transform.position, targetPos) / 2;
             transform.position = Vector2.Lerp(transform.position, targetPos, aa * Time.deltaTime);
         }
-        ////////////////////////////////////////Hit
-        if (isHit && Player.instance.damageTime)
+        ////////////////////////////////////////Hits
+        if (isHit)
         {
             anima.Play(objname + "Hit");
-            isHit = false;
         }
+    }
+
+    public void Hit()
+    {
+        if (hp != 0)
+        {
+            isHit = true;
+
+            hp--;
+
+            Debug.Log(objname);
+        }
+        else
+            isDeath = true;
     }
 
     void ReMove()

@@ -130,8 +130,6 @@ public class Player : MonoBehaviour
                 hitCount = 3;
 
             isAttackMove = true;
-            if (AttackCollder.instance.AttackGo.Count != 0)
-                isAttack = true;
         }
 
     }
@@ -140,7 +138,7 @@ public class Player : MonoBehaviour
     {
         if (playerIsRoomIndex == -1)
             anima.SetBool("HaveEnemy", false);
-        else if (EnemyController.instance.eir[playerIsRoomIndex].cEnemy.Count == 0)
+        else if (EnemyController.instance.eir[playerIsRoomIndex].cEnemyId.Count == 0)
             anima.SetBool("HaveEnemy", false);
         else
             anima.SetBool("HaveEnemy", true);
@@ -174,6 +172,7 @@ public class Player : MonoBehaviour
         anima.SetInteger("Attack", hitCount);
     }
 
+
     ///////////////////////////////////////
 
     void ReSpeed()
@@ -181,20 +180,12 @@ public class Player : MonoBehaviour
         playerData.cSpeed = 4;
     }
     //¹Ø¼üÖ¡ÊÂ¼þ
-    void EnemyCanPlayHitAnima()
-    {
-        damageTime = true;
-    }
-    void rrrrrrrrrrr()
-    {
-        damageTime = false;
-    }
     void AttackTimeOver()
     {
         isAttackMove = false;
         ReSpeed();
     }
-    void AttackSpeed()
+    void SetAttack()
     {
         playerData.cSpeed = 0;
     }
@@ -208,11 +199,20 @@ public class Player : MonoBehaviour
 
         foreach (Collider2D go in coll)
         {
-            if (go.CompareTag("item") && Input.GetKeyDown(KeyCode.E))
+            int itemIndex = Item.instance.ReturnItemIndex();
+
+            if (go.CompareTag("item") && Input.GetKeyDown(KeyCode.E) && itemIndex != 0)
             {
                 Debug.Log("You Pick it");
+                BagController.instance.AddItemMsgInList(itemIndex);
                 BagController.instance.ItemGoBag(go.gameObject);
-                BagController.instance.AddItemMsgInList(Item.instance.ReturnItemIndex());
+
+                Destroy(go.gameObject);
+            }
+            else if (go.CompareTag("item") && itemIndex == 0)
+            {
+                Debug.Log("You pick up the coin");
+                BagController.instance.PickTheCoin();
                 Destroy(go.gameObject);
             }
         }

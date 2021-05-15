@@ -10,14 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 365263454389490073}
   - component: {fileID: 365263454389490075}
-  - component: {fileID: 365263454389490074}
+  - component: {fileID: 6228325036530491893}
   m_Layer: 0
   m_Name: AttackPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &365263454389490073
 Transform:
   m_ObjectHideFlags: 0
@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AttackGo: []
---- !u!70 &365263454389490074
-CapsuleCollider2D:
+--- !u!61 &6228325036530491893
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -58,9 +58,19 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.49018097, y: 0.16464609}
-  m_Size: {x: 0.41738892, y: 0.9889256}
-  m_Direction: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &365263455678693656
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +152,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.59375, y: 0.90625}
+  m_Size: {x: 0.5625, y: 0.84375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -236,3 +246,4 @@ MonoBehaviour:
   hpBuffer: 0
   hpText: {fileID: 0}
   playerIsRoomIndex: 0
+  itemCheckRange: 0

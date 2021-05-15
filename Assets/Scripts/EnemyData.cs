@@ -3,27 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[Serializable]
 public class EnemyData
 {
-    public GameObject cEnemyPrefabs;
-    public float cHp;
-    public float cDamage;
-    public float cSpeed;
-    public string cEnemyKind;
-    public string cEnemyExplain;
-    public bool cBigEnemy;
+    public string EnemyName;
+    public int EnemyId;
+    public bool isBigEnemy;
+    public int EnemyHp;
+    public int EnemyDamage;
+    public string EnemySkill;
+    public float EnemySpeed;
+    public string EnemyKind;
+    public string KindText;
 
 }
 [System.Serializable]
 public class EnemyInRoom
 {
-    public List<GameObject> cEnemy = new List<GameObject>();
+    public List<int> cEnemyId = new List<int>();
     public int cEnemyNum;
 
     public void ArrayUpdata()
     {
-        cEnemyNum = cEnemy.Count;
+        cEnemyNum = cEnemyId.Count;
     }
 
 }
