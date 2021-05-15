@@ -23,8 +23,6 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         enemyAllList = XmlManager.instance.CopyEnemyList();
-        foreach (EnemyData ed in enemyAllList)
-            Debug.Log(ed.EnemyId);
 
         EnemyCreate();
     }

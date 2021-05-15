@@ -32,8 +32,6 @@ public class EnemyBehaviorController : MonoBehaviour
     //当前移动次数记录
     int moveKeep;
 
-    public float hp;
-    public float damage;
     int index;
 
     public float attackTime;
@@ -69,7 +67,6 @@ public class EnemyBehaviorController : MonoBehaviour
         isDeath = false;
 
         anima = GetComponent<Animator>();
-
     }
 
     private void Update()
@@ -79,31 +76,28 @@ public class EnemyBehaviorController : MonoBehaviour
         if (BagController.instance.bagPanel)
             return;
 
-        ////////////////////////////////////////Die
-        if (isDeath && thisEnemy.isBigEnemy)
-        {
-            if (isDivision == 1)
-            {
-                EnemyController.instance.SwitchEnemySkill(thisEnemy.EnemyKind, gameObject, roomindex);
-                EnemyController.instance.ReMoveDeathEnemy(roomindex, thisEnemy.EnemyId);
-                isDivision++;
-                Destroy(gameObject);
-            }
-            else
-                anima.Play(objname + "Skill");
-
-            return;
-        }
-        else if (isDeath && !thisEnemy.isBigEnemy)
-        {
-            anima.Play(objname + "Death");
-            EnemyController.instance.ReMoveDeathEnemy(roomindex, thisEnemy.EnemyId);
-            enabled = false;
-            return;
-        }
+        EnemyDie();
+        EnemyAttack();
         ////////////////////////////////////////Idle
         ////默认动作就是idle
-        ////////////////////////////////////////Attack
+
+        ////////////////////////////////////////Move
+        Debug.Log(thisEnemy.EnemySpeed);
+
+        if (Vector2.Distance(transform.position, Player.instance.gameObject.transform.position) >= attackRange)
+            transform.position = Vector2.MoveTowards(transform.position, Player.instance.gameObject.transform.position, thisEnemy.EnemySpeed * Time.deltaTime);
+        
+
+        ////////////////////////////////////////Hits
+        if (isHit)
+        {
+            anima.Play(objname + "Hit");
+        }
+    }
+    //Attack
+    public void EnemyAttack()
+    {
+        
         if (CheckIsAttack())
             isCanAttack = true;
 
@@ -120,7 +114,7 @@ public class EnemyBehaviorController : MonoBehaviour
 
             if (attackTime >= attackNextTime)
             {
-                anima.SetTrigger(objname + "Attack");
+                anima.SetTrigger(thisEnemy.EnemyName + "Attack");
                 attackTime = 0;
                 if (anima.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
                     Invoke(nameof(ReMove), 0.5f);
@@ -132,43 +126,44 @@ public class EnemyBehaviorController : MonoBehaviour
         if (hurtPlayerNum == 1)
         {
             Player.instance.anima.SetTrigger("PlayerHurt");
-            Player.instance.hpBuffer += damage;
+            Player.instance.hpBuffer += thisEnemy.EnemyDamage;
             hurtPlayerNum = 0;
         }
-        ////////////////////////////////////////Move
-        float aaa = Vector3.Cross(Vector3.forward, (Player.instance.transform.position - transform.position).normalized).y;
-        if ((aaa > 0 && transform.localScale.x < 0) || (aaa < 0 && transform.localScale.x > 0))
-            transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
+    }
+    //Die
+    public void EnemyDie()
+    {
 
-        if (abc == 1)
-            speed = thisEnemy.EnemySpeed;
-        else if (abc == 0)
-            speed = 0;
-
-        targetPos = Player.instance.gameObject.transform.position;
-        if (Vector2.Distance(transform.position, targetPos) < attackRange + 3.0f && !isCanAttack && !isHit)
+        if (isDeath && thisEnemy.isBigEnemy)
         {
-            anima.SetTrigger(objname + "Move");
+            if (isDivision == 1)
+            {
+                EnemyController.instance.SwitchEnemySkill(thisEnemy.EnemyKind, gameObject, roomindex);
+                EnemyController.instance.ReMoveDeathEnemy(roomindex, thisEnemy.EnemyId);
+                isDivision++;
+                Destroy(gameObject);
+            }
+            else
+                anima.Play(thisEnemy.EnemyName + "Skill");
 
-            float aa = speed / Vector2.Distance(transform.position, targetPos) / 2;
-            transform.position = Vector2.Lerp(transform.position, targetPos, aa * Time.deltaTime);
+            return;
         }
-        ////////////////////////////////////////Hits
-        if (isHit)
+        else if (isDeath && !thisEnemy.isBigEnemy)
         {
-            anima.Play(objname + "Hit");
+            anima.Play(thisEnemy.EnemyName + "Death");
+            EnemyController.instance.ReMoveDeathEnemy(roomindex, thisEnemy.EnemyId);
+            enabled = false;
+            return;
         }
     }
 
     public void Hit()
     {
-        if (hp != 0)
+        if (thisEnemy.EnemyHp != 0)
         {
             isHit = true;
 
-            hp--;
-
-            Debug.Log(objname);
+            thisEnemy.EnemyHp--;
         }
         else
             isDeath = true;
