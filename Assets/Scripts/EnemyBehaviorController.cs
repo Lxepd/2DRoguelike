@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyBehaviorController : MonoBehaviour
 {
+    //魔物所在房间
     public int roomindex;
-
+    //是否死亡
     public bool isDeath;
-
     //行为间隔
     public float animaNextTime;
     //当前行为时间
@@ -18,45 +18,43 @@ public class EnemyBehaviorController : MonoBehaviour
     public bool isCanMove;
     //动画组件
     Animator anima;
-    //
+    //动画状态组件
     AnimatorStateInfo info;
-    //目标位置
-    Vector3 targetPos;
-    //位置偏移量
-    Vector3 moreTimeMove;
-    //每段移动的百分比
-    float t = 0;
-      
-    //该行为的次数（用于怪物散步）
-    int nextMoveNum;
-    //当前移动次数记录
-    int moveKeep;
-
-    int index;
-
+    //刚体组件
+    Rigidbody2D rb;
+    //碰撞器组件
+    Collider2D col;
+    //当前攻击的时间
     public float attackTime;
+    //允许攻击的时间
     public float attackNextTime;
-
-    public LayerMask playerMask;
+    //攻击范围
     public float attackRange;
-    //判断是否允许攻击
-
+    //玩家所在图层
+    public LayerMask playerMask;
     //判断是否已经分裂
     public int isDivision;
-
-    public static EnemyBehaviorController instance;
-    public string objname;
-
+    //是否允许攻击
     bool isCanAttack;
-    Collider2D col;
-
+    //速度恢复
     float abc;
+    //控制角色是否受伤
     int hurtPlayerNum;
-
+    //是否受伤
     public bool isHit;
-
+    //反向位移总量
+    float diffBuffer;
+    //是否在击退状态
+    public bool isdiff;
+    //玩家位置
+    Vector3 playerPos;
+    //朝向玩家位置的反向向量
+    Vector3 different;
+    //该魔物对象的基本信息
     public EnemyData thisEnemy;
 
+    //脚本单例
+    public static EnemyBehaviorController instance;
     private void Awake()
     {
         instance = this;
@@ -65,8 +63,11 @@ public class EnemyBehaviorController : MonoBehaviour
     {
         isCanMove = true;
         isDeath = false;
+        isdiff = false;
 
         anima = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+
     }
 
     private void Update()
@@ -82,22 +83,36 @@ public class EnemyBehaviorController : MonoBehaviour
         ////默认动作就是idle
 
         ////////////////////////////////////////Move
-        Debug.Log(thisEnemy.EnemySpeed);
 
-        if (Vector2.Distance(transform.position, Player.instance.gameObject.transform.position) >= attackRange)
+        if (!isdiff && !isDeath && Vector2.Distance(transform.position, Player.instance.gameObject.transform.position) >= attackRange)
             transform.position = Vector2.MoveTowards(transform.position, Player.instance.gameObject.transform.position, thisEnemy.EnemySpeed * Time.deltaTime);
-        
 
         ////////////////////////////////////////Hits
+        info = anima.GetCurrentAnimatorStateInfo(0);
         if (isHit)
         {
-            anima.Play(objname + "Hit");
+            anima.Play(thisEnemy.EnemyName + "Hit");
+            if (info.normalizedTime > 0.6f)
+                isHit = false;
         }
+
+        if(isdiff)
+        {
+            float td = Time.deltaTime;
+            transform.position = new Vector2(transform.position.x + different.x * diffBuffer * td, transform.position.y + different.y * diffBuffer * td);
+
+            diffBuffer -= Time.deltaTime * 2.5f;
+            if (diffBuffer <= 0.5f)
+            {
+                diffBuffer = 0;
+                isdiff = false;
+            }
+        }
+
     }
     //Attack
     public void EnemyAttack()
     {
-        
         if (CheckIsAttack())
             isCanAttack = true;
 
@@ -133,7 +148,6 @@ public class EnemyBehaviorController : MonoBehaviour
     //Die
     public void EnemyDie()
     {
-
         if (isDeath && thisEnemy.isBigEnemy)
         {
             if (isDivision == 1)
@@ -157,16 +171,28 @@ public class EnemyBehaviorController : MonoBehaviour
         }
     }
 
-    public void Hit()
+    public void EnemyHit()
     {
+        if (thisEnemy.EnemyHp == 0)
+        {
+            isDeath = true;
+            return;
+        }
+
         if (thisEnemy.EnemyHp != 0)
         {
             isHit = true;
 
             thisEnemy.EnemyHp--;
+            
+            diffBuffer = 3;
+
+            //受伤后向反方向移动
+            //方向为 自身 - 对方（对方到自身的向量方向） 的值，再加上自身坐标各个坐标分量的值
+            playerPos = Player.instance.gameObject.transform.position;
+            different = transform.position - playerPos;
+
         }
-        else
-            isDeath = true;
     }
 
     void ReMove()

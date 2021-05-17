@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FlyingEyeHit
+  m_Name: "\u53F2\u83B1\u59C6Hit"
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,9 +20,9 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -889859373511162655, guid: ab2f1eac8b5b3454386df2fa6727586b, type: 3}
+      value: {fileID: 9078492290687252751, guid: ed87a790a3ce56e4e9208886cf302818, type: 3}
     - time: 0.083333336
-      value: {fileID: -7500690451134026123, guid: ab2f1eac8b5b3454386df2fa6727586b, type: 3}
+      value: {fileID: -5614518052356705534, guid: ed87a790a3ce56e4e9208886cf302818, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -42,8 +42,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -889859373511162655, guid: ab2f1eac8b5b3454386df2fa6727586b, type: 3}
-    - {fileID: -7500690451134026123, guid: ab2f1eac8b5b3454386df2fa6727586b, type: 3}
+    - {fileID: 9078492290687252751, guid: ed87a790a3ce56e4e9208886cf302818, type: 3}
+    - {fileID: -5614518052356705534, guid: ed87a790a3ce56e4e9208886cf302818, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

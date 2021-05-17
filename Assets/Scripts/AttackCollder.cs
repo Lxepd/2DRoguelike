@@ -10,18 +10,14 @@ public class AttackCollder : MonoBehaviour
     {
         instance = this;
     }   
-
-    private void Update()
-    {
-        
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {
-            EnemyBehaviorController.instance.Hit();
+            collision.GetComponent<EnemyBehaviorController>().EnemyHit();
 
+            if (Player.instance.hitCount == 3)
+                collision.GetComponent<EnemyBehaviorController>().isdiff = true;
         }
     }
 }

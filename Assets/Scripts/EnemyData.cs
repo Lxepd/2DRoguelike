@@ -15,6 +15,22 @@ public class EnemyData
     public string EnemyKind;
     public string KindText;
 
+    public static EnemyData CopyData(EnemyData indexoflist)
+    {
+        EnemyData data = new EnemyData();
+
+        data.EnemyName = indexoflist.EnemyName;
+        data.EnemyId = indexoflist.EnemyId;
+        data.isBigEnemy = indexoflist.isBigEnemy;
+        data.EnemyHp = indexoflist.EnemyHp;
+        data.EnemyDamage = indexoflist.EnemyDamage;
+        data.EnemySkill = indexoflist.EnemySkill;
+        data.EnemySpeed = indexoflist.EnemySpeed;
+        data.EnemyKind = indexoflist.EnemyKind;
+        data.KindText = indexoflist.KindText;
+
+        return data;
+    }
 }
 [System.Serializable]
 public class EnemyInRoom

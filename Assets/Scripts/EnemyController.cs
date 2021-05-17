@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
                     Quaternion.identity);
                 go.transform.parent = roomController.rooms[i].transform;
                 go.GetComponent<EnemyBehaviorController>().roomindex = i;
-                go.GetComponent<EnemyBehaviorController>().thisEnemy = enemyAllList[enemyid];
+                go.GetComponent<EnemyBehaviorController>().thisEnemy = EnemyData.CopyData(enemyAllList[enemyid]);
 
                 eir[i].cEnemyId.Add(enemyAllList[enemyid].EnemyId);
 
@@ -72,23 +72,25 @@ public class EnemyController : MonoBehaviour
         return roomPos;
     }
 
-    public void SwitchEnemySkill(string tag, GameObject parent, int index)
+    public void SwitchEnemySkill(string name, GameObject parent, int index)
     {
-        GameObject go = null;
+        GameObject go;
 
-        switch (tag)
+        switch (name)
         {
             case "Ê·À³Ä·":
                 for (var i = 0; i < 2; i++)
                 {
-                    go = Instantiate(enemyPrefabs[0].gameObject,
-                        new Vector3(parent.transform.position.x - 0.6f + i * 1.2f, parent.transform.position.y,
+                    go = Instantiate(enemyPrefabs[0].gameObject, new Vector3(parent.transform.position.x - 0.6f + i * 1.2f, parent.transform.position.y,
                         parent.transform.position.z), Quaternion.identity);
                     go.transform.parent = roomController.rooms[index].transform;
                     go.GetComponent<EnemyBehaviorController>().roomindex = index;
+                    go.GetComponent<EnemyBehaviorController>().thisEnemy = EnemyData.CopyData(enemyAllList[0]);
 
                     eir[index].cEnemyId.Add(enemyAllList[0].EnemyId);
                 }
+                break;
+            case "òùòð":
                 break;
         }
 
