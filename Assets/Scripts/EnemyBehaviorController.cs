@@ -39,7 +39,7 @@ public class EnemyBehaviorController : MonoBehaviour
     //速度恢复
     float abc;
     //控制角色是否受伤
-    int hurtPlayerNum;
+    bool hurtPlayerNum;
     //是否受伤
     public bool isHit;
     //反向位移总量
@@ -52,7 +52,8 @@ public class EnemyBehaviorController : MonoBehaviour
     Vector3 different;
     //该魔物对象的基本信息
     public EnemyData thisEnemy;
-
+    //
+    float speedTemp;
     //脚本单例
     public static EnemyBehaviorController instance;
     private void Awake()
@@ -64,6 +65,7 @@ public class EnemyBehaviorController : MonoBehaviour
         isCanMove = true;
         isDeath = false;
         isdiff = false;
+        hurtPlayerNum = false;
 
         anima = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -84,10 +86,10 @@ public class EnemyBehaviorController : MonoBehaviour
 
         ////////////////////////////////////////Move
 
-        if (!isdiff && !isDeath && Vector2.Distance(transform.position, Player.instance.gameObject.transform.position) >= attackRange)
-            transform.position = Vector2.MoveTowards(transform.position, Player.instance.gameObject.transform.position, thisEnemy.EnemySpeed * Time.deltaTime);
+        if (!CheckIsAttack() && !isCanAttack && !isdiff && !isDeath && Vector2.Distance(transform.position, Player.instance.gameObject.transform.position) >= attackRange)
+            EnemyMove();
 
-        ////////////////////////////////////////Hits
+        ////////////////////////////////////////Hit
         info = anima.GetCurrentAnimatorStateInfo(0);
         if (isHit)
         {
@@ -110,39 +112,50 @@ public class EnemyBehaviorController : MonoBehaviour
         }
 
     }
+    //Move
+    public void EnemyMove()
+    {
+        anima.SetBool(thisEnemy.EnemyName + "Move", true);
+        transform.position = Vector2.MoveTowards(transform.position, Player.instance.gameObject.transform.position, thisEnemy.EnemySpeed * Time.deltaTime);
+
+    }
     //Attack
     public void EnemyAttack()
     {
         if (CheckIsAttack())
+        {
+            anima.SetBool(thisEnemy.EnemyName + "Move", false);
             isCanAttack = true;
+        }
 
         col = Physics2D.OverlapCircle(transform.position, attackRange, playerMask);
 
         if (isCanAttack)
         {
-            if (!CheckIsAttack() && attackTime >= attackNextTime)
-            {
-                isCanAttack = false;
-                attackTime = 0;
-                return;
-            }
+            //if (!CheckIsAttack() && attackTime >= attackNextTime)
+            //{
+            //    isCanAttack = false;
+            //    attackTime = 0;
+            //    return;
+            //}
 
             if (attackTime >= attackNextTime)
             {
-                anima.SetTrigger(thisEnemy.EnemyName + "Attack");
+                if (CheckIsAttack())
+                    anima.SetTrigger(thisEnemy.EnemyName + "Attack");
                 attackTime = 0;
-                if (anima.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
-                    Invoke(nameof(ReMove), 0.5f);
+                if (anima.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.6f)
+                    isCanAttack = false;
             }
             else if (attackTime < attackNextTime)
                 attackTime += Time.deltaTime;
         }
 
-        if (hurtPlayerNum == 1)
+        if (CheckIsAttack() && hurtPlayerNum)
         {
             Player.instance.anima.SetTrigger("PlayerHurt");
             Player.instance.hpBuffer += thisEnemy.EnemyDamage;
-            hurtPlayerNum = 0;
+            hurtPlayerNum = false;
         }
     }
     //Die
@@ -170,7 +183,7 @@ public class EnemyBehaviorController : MonoBehaviour
             return;
         }
     }
-
+    //Hit
     public void EnemyHit()
     {
         if (thisEnemy.EnemyHp == 0)
@@ -195,11 +208,6 @@ public class EnemyBehaviorController : MonoBehaviour
         }
     }
 
-    void ReMove()
-    {
-        isCanAttack = false;
-    }
-
     bool CheckIsAttack()
     {
         return Physics2D.OverlapCircle(transform.position, attackRange, playerMask);
@@ -211,17 +219,22 @@ public class EnemyBehaviorController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
     //动作关键帧事件
-    public void SetSpeed(int a)
+    public void ReSpeed()
     {
-        abc = a;
+        thisEnemy.EnemySpeed = speedTemp;
+    }
+    public void SetSpeed()
+    {
+        speedTemp = thisEnemy.EnemySpeed;
+        thisEnemy.EnemySpeed = 0;
     }
     public void SetDivision(int a)
     {
         isDivision = 1;
     }
-    public void HurtPlayer(int a)
+    public void HurtPlayer()
     {
-        hurtPlayerNum = a;
+        hurtPlayerNum = true;
     }
  
 }

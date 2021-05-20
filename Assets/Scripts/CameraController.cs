@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
 
     Transform target;
 
-    Vector3 fristPoint = new Vector3(0, 0.5f, -10);
+    Vector3 fristPoint = new Vector3(0, 0.9f, -10);
 
     public float speed;
 

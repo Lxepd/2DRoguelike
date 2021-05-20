@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+//魔物基本属性
 public class EnemyData
 {
     public string EnemyName;
@@ -32,6 +33,7 @@ public class EnemyData
         return data;
     }
 }
+//房间魔物列表
 [System.Serializable]
 public class EnemyInRoom
 {

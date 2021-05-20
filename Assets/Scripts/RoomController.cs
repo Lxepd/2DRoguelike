@@ -53,10 +53,20 @@ public class RoomController : MonoBehaviour
     public GameObject mapPrefab;
     public GameObject mapParent;
 
+
     void Start()
     {
         InitRoom();
         CreateMap();
+
+        int shopRan = Random.Range(1, 101);
+        int npcRoomIndex = Random.Range(2, rooms.Count - 1);
+
+        if (shopRan < 100)
+            rooms[npcRoomIndex].GetComponent<Room>().isShop = true;
+
+        NPCController.instance.npcRoomIndex = npcRoomIndex;
+        NPCController.instance.enabled = true;
     }
     private void Update()
     {
@@ -89,7 +99,7 @@ public class RoomController : MonoBehaviour
                     if (!go.doorDatas[j].activeSelf)
                         continue;
 
-                    go.doorDatas[j].GetComponent<BoxCollider2D>().enabled = false;
+                    go.doorDatas[j].GetComponent<Animator>().SetBool("DoorOpen", false);
                 }
             }
         }
@@ -114,8 +124,6 @@ public class RoomController : MonoBehaviour
 
         foreach (GameObject go in rooms)
             SetRoomDoors(go.GetComponent<Room>(), go.transform.position, roomToWall++);
-
-        CreateShopRoom();
 
         enemyController.enabled = true;
 
@@ -207,16 +215,6 @@ public class RoomController : MonoBehaviour
         //                                         ↓这是墙的类别↓
         return Instantiate(wall[rom.GetWallIndex()].wallFrefab[0], rompos, Quaternion.identity);
     }
-    //创建商店房间
-    void CreateShopRoom()
-    {
-        int shopRan = Random.Range(1, 101);
-
-        if (shopRan < 30)
-            rooms[Random.Range(0, rooms.Count - 1)].GetComponent<Room>().isShop = true;
-
-        //创建商人及物品
-    }
 
     //是否允许进入下一个房间
     public void IsCanGoNextRoom(bool isnull)
@@ -235,7 +233,7 @@ public class RoomController : MonoBehaviour
                     if (!go.doorDatas[j].activeSelf)
                         continue;
 
-                    go.doorDatas[j].GetComponent<BoxCollider2D>().enabled = false;
+                    go.doorDatas[j].GetComponent<Animator>().SetBool("DoorOpen", false);
                 }
             }
 
@@ -249,7 +247,7 @@ public class RoomController : MonoBehaviour
                 if (!go.doorDatas[i].activeSelf)
                     continue;
 
-                go.doorDatas[i].GetComponent<BoxCollider2D>().enabled = true;
+                go.doorDatas[i].GetComponent<Animator>().SetBool("DoorOpen", true);
             }
         }
     }

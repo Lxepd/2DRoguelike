@@ -84,8 +84,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_MaskInteraction: 2
+  m_SpriteSortPoint: 1
 --- !u!95 &4837973979122758336
 Animator:
   serializedVersion: 3
@@ -122,17 +122,15 @@ MonoBehaviour:
   animaNextTime: 0.7
   animaTime: 0
   isCanMove: 0
-  hp: 0
-  damage: 0
   attackTime: 0
   attackNextTime: 1.4
+  attackRange: 0.95
   playerMask:
     serializedVersion: 2
     m_Bits: 128
-  attackRange: 0.95
   isDivision: 0
-  objname: 
   isHit: 0
+  isdiff: 0
 --- !u!50 &7056989097038115056
 Rigidbody2D:
   serializedVersion: 4
